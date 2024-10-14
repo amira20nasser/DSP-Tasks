@@ -56,8 +56,6 @@ class Tab:
                                                         ("all files",
                                                         "*.*")))
         x,y = np.loadtxt(file, dtype=int, skiprows=3, delimiter=" ", unpack=True)
-        print("AFTER UPLOAD X",x) # x is numpy array 
-        print("AFTER UPLOAD Y",y)
         if sig=='A':
             self.A=Signal(x,y)
             self.plot_graph(self.ax_in,self.canvas_in,self.A);       
