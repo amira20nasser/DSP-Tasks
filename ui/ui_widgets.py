@@ -50,12 +50,14 @@ class Tab:
         self.notebook.add(self.frame, text=self.name)
 
     def loadSignal(self,sig):
-        file=filedialog.askopenfilename(initialdir = os.path.expanduser('~/Downloads'),
+        file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),
                                             title = "Select a text file containing the signal B.",
                                             filetypes = (("Text files","*.txt"),
                                                         ("all files",
                                                         "*.*")))
-        x,y = np.loadtxt(file, dtype=int, skiprows=1, delimiter=" ", unpack=True)
+        x,y = np.loadtxt(file, dtype=int, skiprows=3, delimiter=" ", unpack=True)
+        print("AFTER UPLOAD X",x) # x is numpy array 
+        print("AFTER UPLOAD Y",y)
         if sig=='A':
             self.A=Signal(x,y)
             self.plot_graph(self.ax_in,self.canvas_in,self.A);       

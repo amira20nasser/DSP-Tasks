@@ -20,6 +20,8 @@ class Signal:
     @staticmethod
     def subtract_signals(A, B):
         union_set = sorted(set(A.x).union(set(B.x)))
+        print("signal A x",A.x)
+        print("signal A y",A.y)
         y_a = Signal.add_ranges(A.x,A.y,list(union_set))
         y_b = Signal.add_ranges(B.x,B.y, list(union_set))
         print(union_set)
@@ -37,7 +39,6 @@ class Signal:
         res_x=[]
         res_y = list(reversed(A.y))
         res_x = A.x
-    
         print("FOLD X[",res_x)
         print("FOLD Y[",res_y)
         return res_x,res_y 
@@ -53,12 +54,10 @@ class Signal:
         #res_y = [A.y[list(A.x).index(x)] for x in res_x if x in A.x ]
         print(res_x)
         print(A.y)
-
         return res_x,A.y
     # add missing values in x by making y = 0 
     @staticmethod
     def add_ranges(signal_indices,signal_samples, unioin):
-        
-        
-        result = [signal_samples[np.where(signal_indices==x)] if x in signal_indices else 0 for x in unioin]
-        return result
+        new_samples = [signal_samples[np.argmax(signal_indices == x)] if x in signal_indices else 0 for x in unioin]
+        print(new_samples)
+        return new_samples
