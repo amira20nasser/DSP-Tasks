@@ -13,7 +13,7 @@ from utils import show_message_box
 
 class UI:
     def initialize(self):
-        root = ttk.Window(themename='litera')
+        root = ttk.Window(themename='flatly')
 
         # Configure the style for all widgets
 
@@ -21,7 +21,7 @@ class UI:
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
-        notebook = ttk.Notebook(root,padding=5)
+        notebook = ttk.Notebook(root,padding=5,bootstyle=SECONDARY)
         notebook.grid(column=0, row=0, sticky=(N, W, E, S))  # Use grid for notebook
         return root, notebook
 
@@ -36,9 +36,9 @@ class Tab:
         self.Out=None
         input_label = ttk.Label(self.frame, text="Input signals:")
 
-        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'),bootstyle=SECONDARY)
-        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'),bootstyle=SECONDARY)
-        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput('output.txt'),bootstyle=(OUTLINE))
+        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'),bootstyle=SUCCESS)
+        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'),bootstyle=SUCCESS)
+        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput('output.txt'),bootstyle=(SUCCESS,OUTLINE))
         filename_label = ttk.Label(self.frame, text="Save file name:")
         self.save_file = StringVar()
         filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
@@ -46,8 +46,8 @@ class Tab:
         input_label.grid(column=0, row=1,sticky=(W, E))
         sig_A.grid(column=0, row=2,columnspan=2,sticky=(W, E))
         sig_B.grid(column=2, row=2,columnspan=2,sticky=(W, E))
-        self.ax_in, self.canvas_in = self.initialize_graph('Input Signals','t','x(t)')
-        self.ax_out, self.canvas_out = self.initialize_graph('Output Signals','t','x(t)')
+        self.ax_in, self.canvas_in = self.initialize_graph('Input Signal(s)','t','x(t)')
+        self.ax_out, self.canvas_out = self.initialize_graph('Output Signal','t','x(t)')
 
         self.canvas_in.get_tk_widget().grid(column=0, row=0,columnspan=4)
         self.canvas_out.get_tk_widget().grid(column=4, row=0,columnspan=4)
@@ -70,10 +70,10 @@ class Tab:
         x,y = np.loadtxt(file, dtype=int, skiprows=3, delimiter=" ", unpack=True)
         if sig=='A':
             self.A=Signal(x,y)
-            self.plot_graph(self.ax_in,self.canvas_in,self.A);       
+            self.plot_graph(self.ax_in,self.canvas_in,self.A,'Input Signal(s)');       
         elif sig=='B':
             self.B=Signal(x,y)     
-            self.plot_graph(self.ax_in,self.canvas_in,self.B);       
+            self.plot_graph(self.ax_in,self.canvas_in,self.B,'Input Signal(s)');       
     
     
     def saveOutput(self, file):
@@ -97,6 +97,8 @@ class Tab:
         # canvas_widget.pack( fill='both', expand=True)
         return ax,canvas
 
-    def plot_graph(self,ax,canvas,signal):
+    def plot_graph(self,ax,canvas,signal,title):
+        ax.set_title(title)
+
         ax.plot(signal.x, signal.y, marker='o')
         canvas.draw()
