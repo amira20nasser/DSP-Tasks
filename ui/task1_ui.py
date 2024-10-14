@@ -15,7 +15,7 @@ class Task1UI(Tab):
         AminusB = ttk.Button(self.frame, text="A(n) - B(n)",command=self.on_click_subtraction)
         AFold = ttk.Button(self.frame, text="A(-n)",command=self.on_click_folding)
         AmulC = ttk.Button(self.frame, text="cA(n)",command=self.on_click_scaling)
-        AshiftC = ttk.Button(self.frame, text="A(n-c)",command=self.on_click_shift)
+        AshiftC = ttk.Button(self.frame, text="A(n+c)",command=self.on_click_shift)
 
         c_label = ttk.Label(self.frame, text="Value of c:")
         self.c = DoubleVar()
@@ -86,5 +86,7 @@ class Task1UI(Tab):
             show_message_box("title" , "Must Enter a value for c")
         result_x,result_y = Signal.shift_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
-        self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
+        self.plot_graph(self.ax_out,self.canvas_out,self.Out)      
+        #ShiftSignalByConst(-3,Your_indices=result_x,Your_samples=result_y)
+
 
