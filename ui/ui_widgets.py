@@ -1,5 +1,7 @@
 from tkinter import *
-from tkinter import ttk
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
+
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog
@@ -11,12 +13,15 @@ from utils import show_message_box
 
 class UI:
     def initialize(self):
-        root = Tk()
+        root = ttk.Window(themename='litera')
+
+        # Configure the style for all widgets
+
         root.title("Digital Signal Processing")
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
 
-        notebook = ttk.Notebook(root)
+        notebook = ttk.Notebook(root,padding=5)
         notebook.grid(column=0, row=0, sticky=(N, W, E, S))  # Use grid for notebook
         return root, notebook
 
@@ -29,19 +34,26 @@ class Tab:
         self.A=None
         self.B=None
         self.Out=None
-        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'))
-        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'))
-        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput('output.txt'))
+        input_label = ttk.Label(self.frame, text="Input signals:")
 
+        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'),bootstyle=SECONDARY)
+        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'),bootstyle=SECONDARY)
+        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput('output.txt'),bootstyle=(OUTLINE))
+        filename_label = ttk.Label(self.frame, text="Save file name:")
+        self.save_file = StringVar()
+        filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
         self.frame.grid(column=0, row=0,sticky=(W, E))
-        sig_A.grid(column=0, row=1,columnspan=2,sticky=(W, E))
-        sig_B.grid(column=2, row=1,columnspan=2,sticky=(W, E))
+        input_label.grid(column=0, row=1,sticky=(W, E))
+        sig_A.grid(column=0, row=2,columnspan=2,sticky=(W, E))
+        sig_B.grid(column=2, row=2,columnspan=2,sticky=(W, E))
         self.ax_in, self.canvas_in = self.initialize_graph('Input Signals','t','x(t)')
         self.ax_out, self.canvas_out = self.initialize_graph('Output Signals','t','x(t)')
 
         self.canvas_in.get_tk_widget().grid(column=0, row=0,columnspan=4)
         self.canvas_out.get_tk_widget().grid(column=4, row=0,columnspan=4)
-        save_output.grid(column=4,row=1,columnspan=4, sticky=(N, W, E, S))
+        filename_label.grid(column=4, row=1,sticky=(W, E))
+        filename_entry.grid(column=5, row=1, columnspan=3, sticky=(W, E))
+        save_output.grid(column=4,row=2,columnspan=4, sticky=(N, W, E, S))
     
     def add(self):
         

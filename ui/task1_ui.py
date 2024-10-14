@@ -16,19 +16,21 @@ class Task1UI(Tab):
         AFold = ttk.Button(self.frame, text="A(-n)",command=self.on_click_folding)
         AmulC = ttk.Button(self.frame, text="cA(n)",command=self.on_click_scaling)
         AshiftC = ttk.Button(self.frame, text="A(n+c)",command=self.on_click_shift)
+        op2_label = ttk.Label(self.frame, text="Signal operations:")
+        op1_label = ttk.Label(self.frame, text="Operations in variable c:")
 
         c_label = ttk.Label(self.frame, text="Value of c:")
         self.c = DoubleVar()
         c_input = ttk.Entry(self.frame, textvariable=self.c)
-
-        AplusB.grid(column=0, row=5)
-        AminusB.grid(column=1, row=5)
-        AFold.grid(column=2, row=5)
-        AmulC.grid(column=3, row=5)
-        AshiftC.grid(column=4, row=5)
-
-        c_label.grid(column=0, row=6)
-        c_input.grid(column=1, row=6, columnspan=3, sticky=(W, E))
+        op2_label.grid(column=0, row=5,sticky=(W, E))
+        AplusB.grid(column=1, row=5,sticky=(W, E))
+        AminusB.grid(column=2, row=5,sticky=(W, E))
+        AFold.grid(column=3, row=5,sticky=(W, E))
+        AmulC.grid(column=0, row=8, columnspan=2,sticky=(W, E))
+        AshiftC.grid(column=2, row=8,columnspan=2,sticky=(W, E))
+        op1_label.grid(column=0,row=6,sticky=(W, E))
+        c_label.grid(column=0, row=7,sticky=(W, E))
+        c_input.grid(column=1, row=7, columnspan=3, sticky=(W, E))
 
     def add(self):
         super().add()  
