@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from ui.ui_widgets import Tab  
 from utils import *
 from logic.basic_signal_operations import Signal
+from task1_test.tests import *
 class Task1UI(Tab):
     def __init__(self, notebook, name):
         super().__init__(notebook, name)
@@ -43,7 +44,7 @@ class Task1UI(Tab):
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
             self.Out=Signal(result_x,result_y)
             self.plot_graph(self.ax_out,self.canvas_out,self.Out)  
-            #AddSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
+            AddSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
 
             # signals['A']['indices'].clear()
             # signals['B']['indices'].clear()
@@ -57,7 +58,8 @@ class Task1UI(Tab):
             # current_tab_index = notebook.index(notebook.select())
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
             self.Out=Signal(result_x,result_y)
-            self.plot_graph(self.ax_out,self.canvas_out,self.Out)              #SubSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
+            self.plot_graph(self.ax_out,self.canvas_out,self.Out)              
+            SubSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
 
     def on_click_folding(self):
         if self.A==None:
@@ -65,7 +67,7 @@ class Task1UI(Tab):
         result_x,result_y = Signal.fold_signal(self.A)
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
-        #Folding(Your_indices=result_x,Your_samples=result_y)
+        Folding(Your_indices=result_x,Your_samples=result_y)
 
     def on_click_scaling(self):
         if self.A==None:
@@ -75,7 +77,7 @@ class Task1UI(Tab):
         result_x,result_y = Signal.scale_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
-        #Folding(Your_indices=result_x,Your_samples=result_y)
+        # Folding(Your_indices=result_x,Your_samples=result_y)
 
     def on_click_shift(self):
         if self.A==None:
