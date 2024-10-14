@@ -10,9 +10,9 @@ class Task1UI(Tab):
         super().__init__(notebook, name)
         # A = load_signal()
         # B = load_signal()
-        AplusB = ttk.Button(self.frame, text="A + B",command=lambda: self.on_click_addition(),)
-        AminusB = ttk.Button(self.frame, text="A - B",command=lambda: BasicSignalOperations.subtract_signals(signal_a=0,signal_b=0))
-        AtimesB = ttk.Button(self.frame, text="A × B",command=lambda: BasicSignalOperations.folding_signal(signal_a=0,signal_b=0))
+        AplusB = ttk.Button(self.frame, text="A + B",command=self.on_click_addition)
+        AminusB = ttk.Button(self.frame, text="A - B",command=self.on_click_subtraction)
+        AFold = ttk.Button(self.frame, text="A Fold",command=self.on_click_folding)
         AmulC = ttk.Button(self.frame, text="c × A",command=lambda: BasicSignalOperations.scale_signal(signal=0, c=0))
         AdivideB = ttk.Button(self.frame, text="c / A",command=lambda: BasicSignalOperations.divide_signals(signal_a=0,signal_b=0))
 
@@ -22,7 +22,7 @@ class Task1UI(Tab):
 
         AplusB.grid(column=0, row=5)
         AminusB.grid(column=1, row=5)
-        AtimesB.grid(column=2, row=5)
+        AFold.grid(column=2, row=5)
         AmulC.grid(column=3, row=5)
         AdivideB.grid(column=4, row=5)
 
@@ -40,27 +40,31 @@ class Task1UI(Tab):
             result_x,result_y = Signal.add_signals(self.A,self.B)
             # current_tab_index = notebook.index(notebook.select())
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
-            self.plot_graph(self.ax_out,self.canvas_out,Signal(result_x,result_y,))  
+            self.Out=Signal(result_x,result_y)
+            self.plot_graph(self.ax_out,self.canvas_out,self.Out)  
             #AddSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
 
             # signals['A']['indices'].clear()
             # signals['B']['indices'].clear()
             # signals['A']['samples'].clear()
             # signals['B']['samples'].clear()
-    def on_click_subtraction(notebook,ax,canvas):
-        if not signals['A']['indices'] or not signals['B']['indices']:
+    def on_click_subtraction(self):
+        if self.A==None or self.B==None:
             show_message_box("title" , "Must Upload two signals First")
         else:
-            result_x,result_y = BasicSignalOperations.subtract_signals(signals['A']['indices'],signals['A']['samples'],signals['B']['indices'],signals['B']['samples'])
+            result_x,result_y = Signal.subtract_signals(self.A,self.B)
             # current_tab_index = notebook.index(notebook.select())
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
-            plot_graph( result_x,result_y,ax,canvas)  
-            SubSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
+            self.Out=Signal(result_x,result_y)
+            self.plot_graph(self.ax_out,self.canvas_out,self.Out)              #SubSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
 
-    def on_click_folding(ax,canvas,isSignalA):
-        result_x,result_y = BasicSignalOperations.folding_signal(isSignalA=isSignalA,signal=signals)
-        plot_graph(result_x,result_y,ax,canvas)  
-        Folding(Your_indices=result_x,Your_samples=result_y)
+    def on_click_folding(self):
+        if self.A==None:
+            show_message_box("title" , "Must Upload signal A First")
+        result_x,result_y = Signal.fold_signal(self.A)
+        self.Out=Signal(result_x,result_y)
+        self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
+        #Folding(Your_indices=result_x,Your_samples=result_y)
 
 
         def on_click_multiply():

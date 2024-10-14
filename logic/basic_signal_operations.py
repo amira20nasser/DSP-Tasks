@@ -20,8 +20,8 @@ class Signal:
     @staticmethod
     def subtract_signals(A, B):
         union_set = sorted(set(A.x).union(set(B.x)))
-        y_a = add_ranges(A.x,A.y,list(union_set))
-        y_b = add_ranges(B.x,B.y, list(union_set))
+        y_a = Signal.add_ranges(A.x,A.y,list(union_set))
+        y_b = Signal.add_ranges(B.x,B.y, list(union_set))
         print(union_set)
         print(y_a)
         print(y_b)
@@ -32,17 +32,14 @@ class Signal:
         return union_set,result_y
     @staticmethod
 
-    def folding_signal(signal_a):
+    def fold_signal(A):
         res_y = []
         res_x=[]
-        if isSignalA :
-            res_y = list(reversed(signal['A']['samples']))
-            res_x = signal['A']['indices']
-        else:
-            res_y = list(reversed(signal['B']['samples']))
-            res_x = signal['B']['indices']
-        print("FOLDING X[",res_x)
-        print("FOLDING Y[",res_y)
+        res_y = list(reversed(A.y))
+        res_x = A.x
+    
+        print("FOLD X[",res_x)
+        print("FOLD Y[",res_y)
         return res_x,res_y 
 
     @staticmethod
