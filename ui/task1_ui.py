@@ -13,12 +13,12 @@ class Task1UI(Tab):
         AplusB = ttk.Button(self.frame, text="A + B",command=self.on_click_addition)
         AminusB = ttk.Button(self.frame, text="A - B",command=self.on_click_subtraction)
         AFold = ttk.Button(self.frame, text="A Fold",command=self.on_click_folding)
-        AmulC = ttk.Button(self.frame, text="c × A",command=lambda: BasicSignalOperations.scale_signal(signal=0, c=0))
+        AmulC = ttk.Button(self.frame, text="c × A",command=self.on_click_scaling)
         AdivideB = ttk.Button(self.frame, text="c / A",command=lambda: BasicSignalOperations.divide_signals(signal_a=0,signal_b=0))
 
         c_label = ttk.Label(self.frame, text="Value of c:")
-        c = StringVar()
-        c_input = ttk.Entry(self.frame, textvariable=c)
+        self.c = DoubleVar()
+        c_input = ttk.Entry(self.frame, textvariable=self.c)
 
         AplusB.grid(column=0, row=5)
         AminusB.grid(column=1, row=5)
@@ -33,6 +33,7 @@ class Task1UI(Tab):
         super().add()  
     
     def on_click_addition(self):
+        
         
         if self.A==None or self.B==None:
             show_message_box("title" , "Must Upload two signals First")
@@ -66,13 +67,20 @@ class Task1UI(Tab):
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
         #Folding(Your_indices=result_x,Your_samples=result_y)
 
+    def on_click_scaling(self):
+        if self.A==None:
+            show_message_box("title" , "Must Upload signal A First")
+        if self.c==None:
+            show_message_box("title" , "Must Enter a value for c")
+        result_x,result_y = Signal.scale_signal(self.A,self.c.get())
+        self.Out=Signal(result_x,result_y)
+        self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
+        #Folding(Your_indices=result_x,Your_samples=result_y)
 
         def on_click_multiply():
             print("C")
             # BasicSignalOperations.multiply_signals(signal_a=sig_A,signal_b=sig_B)
-        def on_click_scale():
-            print("D")
-            # BasicSignalOperations.scale_signal(signal_a=sig_A,signal_b=sig_B)
+
         def on_click_divide():
             print("E")
             # BasicSignalOperations.divide_signals(signal_a=sig_A,signal_b=sig_B)

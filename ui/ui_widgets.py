@@ -54,7 +54,7 @@ class Tab:
                                             filetypes = (("Text files","*.txt"),
                                                         ("all files",
                                                         "*.*")))
-        x,y = loadtxt(file, dtype=int, skiprows=2, delimiter=" ", unpack=True)
+        x,y = loadtxt(file, dtype=float, skiprows=2, delimiter=" ", unpack=True)
         if sig=='A':
             self.A=Signal(x,y)
             self.plot_graph(self.ax_in,self.canvas_in,self.A);       

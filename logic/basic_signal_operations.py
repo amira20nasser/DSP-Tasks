@@ -47,9 +47,10 @@ class Signal:
         print("divide_signals Logic")
         show_message_box("title","divide_signals not implemented yet")
     @staticmethod
-    def scale_signal(signal, c):
-        print("scale_signal Logic")
-        show_message_box("title","scale_signal not implemented yet")
+    def scale_signal(A, c):
+        res_x=A.x
+        res_y=A.y*c
+        return res_x,res_y
     # add missing values in x by making y = 0 
     @staticmethod
     def add_ranges(signal_indices,signal_samples, unioin):
