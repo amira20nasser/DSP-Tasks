@@ -43,17 +43,22 @@ class Signal:
         return res_x,res_y 
 
     @staticmethod
-    def divide_signals(signal_a, signal_b):
-        print("divide_signals Logic")
-        show_message_box("title","divide_signals not implemented yet")
-    @staticmethod
     def scale_signal(A, c):
         res_x=A.x
         res_y=A.y*c
         return res_x,res_y
+    @staticmethod
+    def shift_signal(A, c):
+        res_x=A.x-c
+        #res_y = [A.y[list(A.x).index(x)] for x in res_x if x in A.x ]
+        print(res_x)
+        print(A.y)
+
+        return res_x,A.y
     # add missing values in x by making y = 0 
     @staticmethod
     def add_ranges(signal_indices,signal_samples, unioin):
+        
         
         result = [signal_samples[np.where(signal_indices==x)] if x in signal_indices else 0 for x in unioin]
         return result

@@ -10,11 +10,11 @@ class Task1UI(Tab):
         super().__init__(notebook, name)
         # A = load_signal()
         # B = load_signal()
-        AplusB = ttk.Button(self.frame, text="A + B",command=self.on_click_addition)
-        AminusB = ttk.Button(self.frame, text="A - B",command=self.on_click_subtraction)
-        AFold = ttk.Button(self.frame, text="A Fold",command=self.on_click_folding)
-        AmulC = ttk.Button(self.frame, text="c × A",command=self.on_click_scaling)
-        AdivideB = ttk.Button(self.frame, text="c / A",command=lambda: BasicSignalOperations.divide_signals(signal_a=0,signal_b=0))
+        AplusB = ttk.Button(self.frame, text="A(n) + B(n)",command=self.on_click_addition)
+        AminusB = ttk.Button(self.frame, text="A(n) - B(n)",command=self.on_click_subtraction)
+        AFold = ttk.Button(self.frame, text="A(-n)",command=self.on_click_folding)
+        AmulC = ttk.Button(self.frame, text="cA(n)",command=self.on_click_scaling)
+        AshiftC = ttk.Button(self.frame, text="A(n-c)",command=self.on_click_shift)
 
         c_label = ttk.Label(self.frame, text="Value of c:")
         self.c = DoubleVar()
@@ -24,7 +24,7 @@ class Task1UI(Tab):
         AminusB.grid(column=1, row=5)
         AFold.grid(column=2, row=5)
         AmulC.grid(column=3, row=5)
-        AdivideB.grid(column=4, row=5)
+        AshiftC.grid(column=4, row=5)
 
         c_label.grid(column=0, row=6)
         c_input.grid(column=1, row=6, columnspan=3, sticky=(W, E))
@@ -77,11 +77,11 @@ class Task1UI(Tab):
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
         #Folding(Your_indices=result_x,Your_samples=result_y)
 
-        def on_click_multiply():
-            print("C")
-            # BasicSignalOperations.multiply_signals(signal_a=sig_A,signal_b=sig_B)
-
-        def on_click_divide():
-            print("E")
-            # BasicSignalOperations.divide_signals(signal_a=sig_A,signal_b=sig_B)
-            
+    def on_click_shift(self):
+        if self.A==None:
+            show_message_box("title" , "Must Upload signal A First")
+        if self.c==None:
+            show_message_box("title" , "Must Enter a value for c")
+        result_x,result_y = Signal.shift_signal(self.A,self.c.get())
+        self.Out=Signal(result_x,result_y)
+        self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
