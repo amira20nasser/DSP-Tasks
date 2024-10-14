@@ -72,7 +72,7 @@ class Tab:
             print(self.Out.y)
 
             output=np.stack((self.Out.x,self.Out.y),axis=1)
-            np.savetxt(fname=file,header=str(len(self.Out.x)), delimiter=' ', X=output)
+            np.savetxt(fname=file,header=str(len(self.Out.x)), comments='', fmt='%i', delimiter=' ', X=output)
 
 
     def initialize_graph(self,title,xlabel,ylabel):
