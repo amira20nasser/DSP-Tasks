@@ -5,8 +5,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog
 import os
 from tkinter import messagebox
-from numpy import loadtxt
+import numpy as np
 from logic.basic_signal_operations import Signal
+from utils import show_message_box
 
 class UI:
     def initialize(self):
@@ -30,7 +31,7 @@ class Tab:
         self.Out=None
         sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'))
         sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'))
-        save_output=ttk.Button(self.frame,text="Save Output Signal",command=self.saveOutput)
+        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput('output.txt'))
 
         self.frame.grid(column=0, row=0,sticky=(W, E))
         sig_A.grid(column=0, row=1,columnspan=2,sticky=(W, E))
@@ -54,7 +55,7 @@ class Tab:
                                             filetypes = (("Text files","*.txt"),
                                                         ("all files",
                                                         "*.*")))
-        x,y = loadtxt(file, dtype=float, skiprows=2, delimiter=" ", unpack=True)
+        x,y = np.loadtxt(file, dtype=int, skiprows=1, delimiter=" ", unpack=True)
         if sig=='A':
             self.A=Signal(x,y)
             self.plot_graph(self.ax_in,self.canvas_in,self.A);       
@@ -64,8 +65,15 @@ class Tab:
     
     
     def saveOutput(self, file):
-        print("display_signal Logic")
-            #return signal 
+        if self.Out == None:
+            show_message_box("title" , "No output signal to save")
+        else:
+            print(self.Out.x)
+            print(self.Out.y)
+
+            output=np.stack((self.Out.x,self.Out.y),axis=1)
+            np.savetxt(fname=file,header=str(len(self.Out.x)), delimiter=' ', X=output)
+
 
     def initialize_graph(self,title,xlabel,ylabel):
     

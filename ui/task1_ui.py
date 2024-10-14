@@ -85,3 +85,4 @@ class Task1UI(Tab):
         result_x,result_y = Signal.shift_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
+
