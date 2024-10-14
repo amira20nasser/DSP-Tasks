@@ -77,7 +77,7 @@ class Task1UI(Tab):
         result_x,result_y = Signal.scale_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out)          
-        # Folding(Your_indices=result_x,Your_samples=result_y)
+        MultiplySignalByConst(5,Your_indices=result_x,Your_samples=result_y)
 
     def on_click_shift(self):
         if self.A==None:
