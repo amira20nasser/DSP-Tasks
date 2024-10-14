@@ -76,8 +76,8 @@ class Tab:
 
 
     def initialize_graph(self,title,xlabel,ylabel):
-    
-        fig, ax = plt.subplots(figsize=(5, 4))
+        fig = plt.Figure(figsize=(5, 4))
+        ax = fig.add_subplot(111)
         ax.set_title(title)
         ax.set_xlabel(xlabel)
         ax.set_ylabel(ylabel)
