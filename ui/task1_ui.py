@@ -15,7 +15,7 @@ class Task1UI(Tab):
         AminusB = ttk.Button(self.frame, text="A(n) - B(n)",command=self.on_click_subtraction)
         AFold = ttk.Button(self.frame, text="A(-n)",command=self.on_click_folding)
         AmulC = ttk.Button(self.frame, text="cA(n)",command=self.on_click_scaling)
-        AshiftC = ttk.Button(self.frame, text="A(n-c)",command=self.on_click_shift)
+        AshiftC = ttk.Button(self.frame, text="A(n+c)",command=self.on_click_shift)
 
         c_label = ttk.Label(self.frame, text="Value of c:")
         self.c = DoubleVar()
