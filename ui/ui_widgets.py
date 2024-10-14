@@ -1,7 +1,7 @@
 from tkinter import *
 import ttkbootstrap as ttk
 from ttkbootstrap.constants import *
-
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from tkinter import filedialog
@@ -28,6 +28,8 @@ class UI:
 class Tab:
 
     def __init__(self,notebook,name):
+        matplotlib.style.use('seaborn-v0_8-pastel')
+
         self.notebook=notebook
         self.name=name
         self.frame = ttk.Frame(notebook,padding="3 3 12 12")
@@ -112,5 +114,5 @@ class Tab:
 
     def plot_graph(self,ax,canvas,signal,title):
         ax.set_title(title)
-        ax.plot(signal.x, signal.y, marker='o')
+        ax.plot(signal.x, signal.y, marker='o'),
         canvas.draw()
