@@ -38,7 +38,7 @@ class Signal:
         res_y = []
         res_x=[]
         res_y = list(reversed(A.y))
-        res_x = A.x
+        res_x = np.array(list(reversed(A.x)))*-1
         print("FOLD X[",res_x)
         print("FOLD Y[",res_y)
         return res_x,res_y 
