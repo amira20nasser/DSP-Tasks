@@ -33,13 +33,14 @@ class Task1UI(Tab):
         c_input.grid(column=1, row=7, columnspan=3, sticky=(W, E))
 
     def add(self):
+        
         super().add()  
     
     def on_click_addition(self):
         
         
         if self.A==None or self.B==None:
-            show_message_box("title" , "Must Upload two signals First")
+            show_message_box("DSP" , "Please upload signals A and B")
         else:
             result_x,result_y = Signal.add_signals(self.A,self.B)
             # current_tab_index = notebook.index(notebook.select())
@@ -54,7 +55,7 @@ class Task1UI(Tab):
             # signals['B']['samples'].clear()
     def on_click_subtraction(self):
         if self.A==None or self.B==None:
-            show_message_box("title" , "Must Upload two signals First")
+            show_message_box("DSP" , "Please upload signals A and B")
         else:
             result_x,result_y = Signal.subtract_signals(self.A,self.B)
             # current_tab_index = notebook.index(notebook.select())
@@ -65,7 +66,7 @@ class Task1UI(Tab):
 
     def on_click_folding(self):
         if self.A==None:
-            show_message_box("title" , "Must Upload signal A First")
+            show_message_box("DSP" , "Please upload signal A")
         result_x,result_y = Signal.fold_signal(self.A)
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Folded)')          
@@ -73,9 +74,9 @@ class Task1UI(Tab):
 
     def on_click_scaling(self):
         if self.A==None:
-            show_message_box("title" , "Must Upload signal A First")
+            show_message_box("DSP" , "Please upload signal A")
         if self.c==None:
-            show_message_box("title" , "Must Enter a value for c")
+            show_message_box("DSP" , "Please enter a value for c")
         result_x,result_y = Signal.scale_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Scaled by c)')          
@@ -83,9 +84,9 @@ class Task1UI(Tab):
 
     def on_click_shift(self):
         if self.A==None:
-            show_message_box("title" , "Must Upload signal A First")
+            show_message_box("DSP" , "Please upload signal A")
         if self.c==None:
-            show_message_box("title" , "Must Enter a value for c")
+            show_message_box("DSP" , "Please enter a value for c")
         result_x,result_y = Signal.shift_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
         self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Shifted by c)')      
