@@ -16,7 +16,6 @@ class UI:
         root = ttk.Window(themename='flatly')
 
         # Configure the style for all widgets
-
         root.title("Digital Signal Processing")
         root.columnconfigure(0, weight=1)
         root.rowconfigure(0, weight=1)
@@ -61,7 +60,6 @@ class Tab:
         clear_output.grid(column=4,row=3,columnspan=4, sticky=(N, W, E, S))
 
     def add(self):
-        
         for child in self.frame.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
         self.notebook.add(self.frame, text=self.name)
@@ -72,7 +70,7 @@ class Tab:
                                             filetypes = (("Text files","*.txt"),
                                                         ("all files",
                                                         "*.*")))
-        x,y = np.loadtxt(file, dtype=int, skiprows=3, delimiter=" ", unpack=True)
+        x,y = np.loadtxt(file, dtype=float, skiprows=3, delimiter=" ", unpack=True)
         if sig=='A':
             self.A=Signal(x,y)
             self.plot_graph(self.ax_in,self.canvas_in,self.A,'Input Signal(s)');       
