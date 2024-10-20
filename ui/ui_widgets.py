@@ -65,20 +65,18 @@ class Tab:
         self.notebook.add(self.frame, text=self.name)
 
     def loadSignal(self,sig):
-        file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),
-                                            title = "Select a text file containing the signal B.",
-                                            filetypes = (("Text files","*.txt"),
-                                                        ("all files",
-                                                        "*.*")))
+        file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),title = "Select a text file containing the signal B.",filetypes = (("Text files","*.txt"), ("all files","*.*")))
         x,y = np.loadtxt(file, dtype=float, skiprows=3, delimiter=" ", unpack=True)
         if sig=='A':
             self.A=Signal(x,y)
-            self.plot_graph(self.ax_in,self.canvas_in,self.A,'Input Signal(s)');       
+            self.plot_discrete_graph(self.ax_in,self.canvas_in,self.A,'Input Signal(s)');       
+
         elif sig=='B':
             self.B=Signal(x,y)     
-            self.plot_graph(self.ax_in,self.canvas_in,self.B,'Input Signal(s)');       
+            self.plot_discrete_graph(self.ax_in,self.canvas_in,self.B,'Input Signal(s)');       
     
     
+
     def saveOutput(self, file):
         if self.Out == None:
             show_message_box("DSP" , "No output signal to save")
@@ -87,7 +85,6 @@ class Tab:
         else:
             print(self.Out.x)
             print(self.Out.y)
-
             output=np.stack((self.Out.x,self.Out.y),axis=1)
             np.savetxt(fname=file+'.txt',header=str(len(self.Out.x)), comments='', fmt='%i', delimiter=' ', X=output)
             show_message_box("DSP" , "Signal saved successfully")
@@ -110,7 +107,8 @@ class Tab:
         # canvas_widget.pack( fill='both', expand=True)
         return fig,ax,canvas
 
-    def plot_graph(self,ax,canvas,signal,title):
+    def plot_discrete_graph(self,ax,canvas,signal,title):
+        line_colors = ['b-', 'r-', 'g-','m-']
         ax.set_title(title)
-        ax.plot(signal.x, signal.y, marker='o'),
+        ax.stem(signal.x, signal.y, linefmt=line_colors[np.random.randint(4)],markerfmt="o" , basefmt="k"),
         canvas.draw()

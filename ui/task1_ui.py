@@ -46,9 +46,8 @@ class Task1UI(Tab):
             # current_tab_index = notebook.index(notebook.select())
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
             self.Out=Signal(result_x,result_y)
-            self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Sum)')
+            self.plot_discrete_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Sum)')
             AddSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
-
             # signals['A']['indices'].clear()
             # signals['B']['indices'].clear()
             # signals['A']['samples'].clear()
@@ -61,7 +60,8 @@ class Task1UI(Tab):
             # current_tab_index = notebook.index(notebook.select())
             # current_tab_frame = notebook.nametowidget(notebook.tabs()[current_tab_index])
             self.Out=Signal(result_x,result_y)
-            self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Difference)')              
+            self.plot_discrete_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Difference)')              
+
             SubSignalSamplesAreEqual("Signal1.txt","Signal2.txt",result_x,result_y)
 
     def on_click_folding(self):
@@ -69,7 +69,7 @@ class Task1UI(Tab):
             show_message_box("DSP" , "Please upload signal A")
         result_x,result_y = Signal.fold_signal(self.A)
         self.Out=Signal(result_x,result_y)
-        self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Folded)')          
+        self.plot_discrete_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Folded)')          
         Folding(Your_indices=result_x,Your_samples=result_y)
 
     def on_click_scaling(self):
@@ -79,7 +79,8 @@ class Task1UI(Tab):
             show_message_box("DSP" , "Please enter a value for c")
         result_x,result_y = Signal.scale_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
-        self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Scaled by c)')          
+        self.plot_discrete_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Scaled by c)')          
+
         MultiplySignalByConst(5,Your_indices=result_x,Your_samples=result_y)
 
     def on_click_shift(self):
@@ -89,7 +90,7 @@ class Task1UI(Tab):
             show_message_box("DSP" , "Please enter a value for c")
         result_x,result_y = Signal.shift_signal(self.A,self.c.get())
         self.Out=Signal(result_x,result_y)
-        self.plot_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Shifted by c)')      
+        self.plot_discrete_graph(self.ax_out,self.canvas_out,self.Out,'Output Signal (Shifted by c)')      
         #ShiftSignalByConst(-3,Your_indices=result_x,Your_samples=result_y)
 
 
