@@ -35,58 +35,31 @@ class Tab:
         self.A=None
         self.B=None
         self.Out=None
-        input_label = ttk.Label(self.frame, text="Input signals:")
-
-        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A'),bootstyle=SUCCESS)
-        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B'),bootstyle=SUCCESS)
-        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput(filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
-        clear_output=ttk.Button(self.frame,text="Clear Output",command=self.clearOutput,bootstyle=(SUCCESS,OUTLINE))
-
-        filename_label = ttk.Label(self.frame, text="Save file name:")
-        self.save_file = StringVar()
-        filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
-        self.frame.grid(column=0, row=0,sticky=(W, E))
-        input_label.grid(column=0, row=1,sticky=(W, E))
-        sig_A.grid(column=0, row=2,columnspan=2,sticky=(W, E))
-        sig_B.grid(column=2, row=2,columnspan=2,sticky=(W, E))
-        self.fig_in, self.ax_in, self.canvas_in = self.initialize_graph('Input Signal(s)','t','x(t)')
-        self.fig_out,self.ax_out, self.canvas_out = self.initialize_graph('Output Signal','t','x(t)')
-
-        self.canvas_in.get_tk_widget().grid(column=0, row=0,columnspan=4)
-        self.canvas_out.get_tk_widget().grid(column=4, row=0,columnspan=4)
-        filename_label.grid(column=4, row=1,sticky=(W, E))
-        filename_entry.grid(column=5, row=1, columnspan=3, sticky=(W, E))
-        save_output.grid(column=4,row=2,columnspan=4, sticky=(N, W, E, S))
-        clear_output.grid(column=4,row=3,columnspan=4, sticky=(N, W, E, S))
-
+        
     def add(self):
         for child in self.frame.winfo_children(): 
             child.grid_configure(padx=5, pady=5)
         self.notebook.add(self.frame, text=self.name)
 
-    def loadSignal(self,sig):
+    def loadSignal(self,sig,ax,canvas):
+        
         file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),title = "Select a text file containing the signal B.",filetypes = (("Text files","*.txt"), ("all files","*.*")))
         x,y = np.loadtxt(file, dtype=float, skiprows=3, delimiter=" ", unpack=True)
-        if sig=='A':
-            self.A=Signal(x,y)
-            self.plot_discrete_graph(self.ax_in,self.canvas_in,self.A,'Input Signal(s)');       
+        setattr(self,sig,Signal(x,y))
+        self.plot_discrete_graph(ax,canvas,getattr(self,sig),'Input Signal(s)');       
 
-        elif sig=='B':
-            self.B=Signal(x,y)     
-            self.plot_discrete_graph(self.ax_in,self.canvas_in,self.B,'Input Signal(s)');       
-    
     
 
-    def saveOutput(self, file):
-        if self.Out == None:
+    def saveOutput(self, signal, file):
+        if signal == None:
             show_message_box("DSP" , "No output signal to save")
         elif not file :
             show_message_box("DSP" , "Please enter save file name")
         else:
-            print(self.Out.x)
-            print(self.Out.y)
-            output=np.stack((self.Out.x,self.Out.y),axis=1)
-            np.savetxt(fname=file+'.txt',header=str(len(self.Out.x)), comments='', fmt='%i', delimiter=' ', X=output)
+            print(signal.x)
+            print(signal.y)
+            output=np.stack((signal.x,signal.y),axis=1)
+            np.savetxt(fname=file+'.txt',header=str(len(signal.x)), comments='', fmt='%i', delimiter=' ', X=output)
             show_message_box("DSP" , "Signal saved successfully")
 
     def clearOutput(self):

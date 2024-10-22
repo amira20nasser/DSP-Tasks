@@ -1,6 +1,8 @@
 import numpy as np
 from tkinter import *
 from tkinter import ttk
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from ui.ui_widgets import Tab  
@@ -13,13 +15,28 @@ class Task2UI(Tab):
     def __init__(self, notebook, name):
         
         super().__init__(notebook, name)
-        sig_A= ttk.Button(self.frame,text="Read Input", command=lambda: self.loadSignal('A'))
-        sig_B= ttk.Button(self.frame,text="Interpolate Input",command=lambda: self.interpolate(self.ax_in,self.canvas_in,self.A,''))
+        read_input= ttk.Button(self.frame,text="Read Input", command=lambda: self.loadSignal('A',self.ax_int,self.canvas_int))
+        interpolate_input= ttk.Button(self.frame,text="Interpolate Input",command=lambda: self.interpolate(self.ax_int,self.canvas_int,self.A,''))
         self.continous_out = None
         self.discrete_out = None
         
-        # self.ax_in.plot(np.random.rand(1000000,),np.zeros(1000000))
-        # self.canvas_in.draw()
+        # self.ax_int.plot(np.random.rand(1000000,),np.zeros(1000000))
+        # self.canvas_int.draw()
+
+        save_interpolation_output=ttk.Button(self.frame,text="Save Interpolation",command=lambda: self.saveOutput(self.Interpolation,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
+        clear__interpolation_output=ttk.Button(self.frame,text="Clear Interpolation",command=self.clearOutput,bootstyle=(SUCCESS,OUTLINE))
+
+        filename_label = ttk.Label(self.frame, text="Save file name:")
+        self.save_file = StringVar()
+        filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
+        self.frame.grid(column=0, row=0,sticky=(W, E))
+        self.fig_int, self.ax_int, self.canvas_int = self.initialize_graph('Input Signal','t','x(t)')
+        self.fig_sin,self.ax_sin, self.canvas_sin = self.initialize_graph('Sinosoidal Signal','t','x(t)')
+
+        self.canvas_int.get_tk_widget().grid(column=4, row=0,columnspan=4)
+        self.canvas_sin.get_tk_widget().grid(column=0, row=0,columnspan=4)
+        filename_label.grid(column=4, row=1,sticky=(W, E))
+        filename_entry.grid(column=5, row=1, columnspan=3, sticky=(W, E))
 
         label = ttk.Label(self.frame,text="Please select type:")
         label.grid(column=0, row=3,columnspan=2,sticky=(W, E))
@@ -50,6 +67,7 @@ class Task2UI(Tab):
 
         generate_btn = ttk.Button(self.frame, text="Generate SIN / COS",command=self.on_click_generate)
         generate_btn.grid(column=0, row=7,columnspan=3,sticky=(W, E))
+        save_sin_output=ttk.Button(self.frame,text="Save Sampled Sinosoidal",command=lambda: self.saveOutput(self.Sin,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
 
         label = ttk.Label(self.frame,text="F_s")
         label.grid(column=0, row=8,columnspan=1,sticky=(W, E))
@@ -58,20 +76,26 @@ class Task2UI(Tab):
         fs_input.grid(column=1, row=8, columnspan=1,sticky=(N, W, E, S))
         sampling_btn = ttk.Button(self.frame, text=f"Sampling {self.selected_type.get()} Wave",command=self.on_click_Sampling)
         sampling_btn.grid(column=0, row=9,columnspan=3,sticky=(W, E))
+        save_sin_output.grid(column=0, row=10,columnspan=4,sticky=(W, E))
+        read_input.grid(column=4,row=5,columnspan=2,sticky=(W, E))
+        interpolate_input.grid(column=6,row=5,columnspan=2,sticky=(W, E))
+        save_interpolation_output.grid(column=4,row=6,columnspan=2,sticky=(W, E))
+        clear__interpolation_output.grid(column=6,row=6,columnspan=2,sticky=(W, E))
 
     def on_click_generate(self):
         t,x_t = GenerateSinCos.generate_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get())
         signal = Signal(t,x_t)
         continous_out = signal
-        self.plot_continous_graph(self.ax_out,self.canvas_out,signal,f"{self.selected_type.get()} Signal")
+        self.plot_continous_graph(self.ax_sin,self.canvas_sin,signal,f"{self.selected_type.get()} Signal")
 
     def on_click_Sampling(self):
         if self.fs.get() < 2*self.freq.get():
             show_message_box("ERROR" , f"fs must be at least {2*self.freq.get()} ")
         n,x_n = GenerateSinCos.sampling_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get(),self.fs.get())
         signal = Signal(n,x_n)
+        self.Sin=signal
         continous_out = signal
-        self.plot_discrete_graph(self.ax_out,self.canvas_out,signal,f"Sampling {self.selected_type.get()} Signal")
+        self.plot_discrete_graph(self.ax_sin,self.canvas_sin,signal,f"Sampling {self.selected_type.get()} Signal")
 
 
     def plot_continous_graph(self,ax,canvas,signal,title):
@@ -84,6 +108,8 @@ class Task2UI(Tab):
         f = interp1d(signal.x, signal.y, kind='cubic')
         xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.1)
         ynew = f(xnew)   # use interpolation function returned by `interp1d`
+        self.Interpolation=Signal(xnew,ynew)
+        ax.set_title('Input Signal Interpolated')
         ax.plot(signal.x, signal.y, 'o', xnew, ynew, '-')
         canvas.draw()
 

@@ -1,5 +1,7 @@
 from tkinter import *
 from tkinter import ttk
+import ttkbootstrap as ttk
+from ttkbootstrap.constants import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from ui.ui_widgets import Tab  
@@ -11,6 +13,30 @@ class Task1UI(Tab):
         super().__init__(notebook, name)
         # A = load_signal()
         # B = load_signal()
+        input_label = ttk.Label(self.frame, text="Input signals:")
+
+        sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A',self.ax_in,self.canvas_in),bootstyle=SUCCESS)
+        sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B',self.ax_in,self.canvas_in),bootstyle=SUCCESS)
+        save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput(self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
+        clear_output=ttk.Button(self.frame,text="Clear Output",command=self.clearOutput,bootstyle=(SUCCESS,OUTLINE))
+
+        filename_label = ttk.Label(self.frame, text="Save file name:")
+        self.save_file = StringVar()
+        filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
+        self.frame.grid(column=0, row=0,sticky=(W, E))
+        input_label.grid(column=0, row=1,sticky=(W, E))
+        sig_A.grid(column=0, row=2,columnspan=2,sticky=(W, E))
+        sig_B.grid(column=2, row=2,columnspan=2,sticky=(W, E))
+        self.fig_in, self.ax_in, self.canvas_in = self.initialize_graph('Input Signal(s)','t','x(t)')
+        self.fig_out,self.ax_out, self.canvas_out = self.initialize_graph('Output Signal','t','x(t)')
+
+        self.canvas_in.get_tk_widget().grid(column=0, row=0,columnspan=4)
+        self.canvas_out.get_tk_widget().grid(column=4, row=0,columnspan=4)
+        filename_label.grid(column=4, row=1,sticky=(W, E))
+        filename_entry.grid(column=5, row=1, columnspan=3, sticky=(W, E))
+        save_output.grid(column=4,row=2,columnspan=4, sticky=(N, W, E, S))
+        clear_output.grid(column=4,row=3,columnspan=4, sticky=(N, W, E, S))
+
         AplusB = ttk.Button(self.frame, text="A(n) + B(n)",command=self.on_click_addition)
         AminusB = ttk.Button(self.frame, text="A(n) - B(n)",command=self.on_click_subtraction)
         AFold = ttk.Button(self.frame, text="A(-n)",command=self.on_click_folding)
