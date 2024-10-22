@@ -62,13 +62,13 @@ class Tab:
             np.savetxt(fname=file+'.txt',header=str(len(signal.x)), comments='', fmt='%.6f', delimiter=' ', X=output)
             show_message_box("DSP" , "Signal saved successfully")
 
-    def clearOutput(self):
-        self.Out=None
-        self.ax_out.clear()
-        self.ax_out.set_title('Output Signal')
-        self.ax_out.set_xlabel('t')
-        self.ax_out.set_ylabel('x(t)')
-        self.canvas_out.draw()
+    def clearOutput(self,sig,ax,canvas):
+        setattr(self,'Out',None)
+        ax.clear()
+        ax.set_title('Output Signal')
+        ax.set_xlabel('t')
+        ax.set_ylabel('x(t)')
+        canvas.draw()
 
     def initialize_graph(self,title,xlabel,ylabel):
         fig = plt.Figure(figsize=(5, 4))

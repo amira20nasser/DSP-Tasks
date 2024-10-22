@@ -24,8 +24,7 @@ class Task2UI(Tab):
         # self.canvas_int.draw()
 
         save_interpolation_output=ttk.Button(self.frame,text="Save Interpolation",command=lambda: self.saveOutput(self.Interpolation,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
-        clear__interpolation_output=ttk.Button(self.frame,text="Clear Interpolation",command=self.clearOutput,bootstyle=(SUCCESS,OUTLINE))
-
+        clear__interpolation_output=ttk.Button(self.frame,text="Clear Interpolation",command=lambda:self.clearOutput('Interpolation',self.ax_int,self.canvas_int),bootstyle=(SUCCESS,OUTLINE))
         filename_label = ttk.Label(self.frame, text="Save file name:")
         self.save_file = StringVar()
         filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)

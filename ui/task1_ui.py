@@ -18,8 +18,7 @@ class Task1UI(Tab):
         sig_A= ttk.Button(self.frame,text="Signal A", command=lambda: self.loadSignal('A',self.ax_in,self.canvas_in),bootstyle=SUCCESS)
         sig_B= ttk.Button(self.frame,text="Signal B",command=lambda: self.loadSignal('B',self.ax_in,self.canvas_in),bootstyle=SUCCESS)
         save_output=ttk.Button(self.frame,text="Save Output Signal",command=lambda: self.saveOutput(self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
-        clear_output=ttk.Button(self.frame,text="Clear Output",command=self.clearOutput,bootstyle=(SUCCESS,OUTLINE))
-
+        clear_output=ttk.Button(self.frame,text="Clear Output",command=lambda:self.clearOutput('Out',self.ax_out,self.canvas_out),bootstyle=(SUCCESS,OUTLINE))
         filename_label = ttk.Label(self.frame, text="Save file name:")
         self.save_file = StringVar()
         filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
