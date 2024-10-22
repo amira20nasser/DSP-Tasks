@@ -7,10 +7,14 @@ from ui.ui_widgets import Tab
 from logic.generate_sin_cos import *
 from logic.basic_signal_operations import Signal
 from utils import *
+from scipy.interpolate import interp1d
 
 class Task2UI(Tab):
     def __init__(self, notebook, name):
+        
         super().__init__(notebook, name)
+        sig_A= ttk.Button(self.frame,text="Read Input", command=lambda: self.loadSignal('A'))
+        sig_B= ttk.Button(self.frame,text="Interpolate Input",command=lambda: self.interpolate(self.ax_in,self.canvas_in,self.A,''))
         self.continous_out = None
         self.discrete_out = None
         
@@ -59,7 +63,7 @@ class Task2UI(Tab):
         t,x_t = GenerateSinCos.generate_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get())
         signal = Signal(t,x_t)
         continous_out = signal
-        self.plot_continous_graph(self.ax_in,self.canvas_in,signal,f"{self.selected_type.get()} Signal")
+        self.plot_continous_graph(self.ax_out,self.canvas_out,signal,f"{self.selected_type.get()} Signal")
 
     def on_click_Sampling(self):
         if self.fs.get() < 2*self.freq.get():
@@ -73,6 +77,14 @@ class Task2UI(Tab):
     def plot_continous_graph(self,ax,canvas,signal,title):
         ax.set_title(title)
         ax.plot(signal.x, signal.y),
+        canvas.draw()
+    def interpolate(self,ax,canvas,signal,title):
+        if self.A==None:
+            show_message_box("DSP" , "Please upload signal A")
+        f = interp1d(signal.x, signal.y, kind='cubic')
+        xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.1)
+        ynew = f(xnew)   # use interpolation function returned by `interp1d`
+        ax.plot(signal.x, signal.y, 'o', xnew, ynew, '-')
         canvas.draw()
 
     def add(self):
