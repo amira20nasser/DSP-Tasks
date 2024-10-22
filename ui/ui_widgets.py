@@ -59,7 +59,7 @@ class Tab:
             print(signal.x)
             print(signal.y)
             output=np.stack((signal.x,signal.y),axis=1)
-            np.savetxt(fname=file+'.txt',header=str(len(signal.x)), comments='', fmt='%.6f', delimiter=' ', X=output)
+            np.savetxt(fname=file+'.txt',header='0\n0\n'+str(len(signal.x)), comments='', fmt='%.6f', delimiter=' ', X=output)
             show_message_box("DSP" , "Signal saved successfully")
 
     def clearOutput(self,sig,ax,canvas):

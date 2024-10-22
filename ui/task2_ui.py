@@ -34,8 +34,8 @@ class Task2UI(Tab):
 
         self.canvas_int.get_tk_widget().grid(column=4, row=0,columnspan=4)
         self.canvas_sin.get_tk_widget().grid(column=0, row=0,columnspan=4)
-        filename_label.grid(column=4, row=1,sticky=(W, E))
-        filename_entry.grid(column=5, row=1, columnspan=3, sticky=(W, E))
+        filename_label.grid(column=0, row=1,sticky=(W, E))
+        filename_entry.grid(column=1, row=1, columnspan=3, sticky=(W, E))
 
         label = ttk.Label(self.frame,text="Please select type:")
         label.grid(column=0, row=3,columnspan=2,sticky=(W, E))
@@ -50,12 +50,16 @@ class Task2UI(Tab):
         amplitude_label = ttk.Label(self.frame, text="Amplitude")
         amplitude_label.grid(column=0, row=5,columnspan=2,sticky=(W, E))
         amplitude_input = ttk.Entry(self.frame, textvariable=self.amplitude)
+        amplitude_input.insert(1, 1)
+
         amplitude_input.grid(column=0, row=6, columnspan=1,sticky=(N, W, E, S))
 
         self.freq = IntVar()
         freq_label = ttk.Label(self.frame, text="Frequency")
         freq_label.grid(column=1, row=5,columnspan=2,sticky=(W, E))
         freq_input = ttk.Entry(self.frame, textvariable=self.freq)
+        freq_input.insert(1, 1)
+
         freq_input.grid(column=1, row=6, columnspan=1, sticky=(W, E))
 
         self.shifted = DoubleVar()
