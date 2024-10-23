@@ -31,9 +31,12 @@ class Task2UI(Tab):
         self.frame.grid(column=0, row=0,sticky=(W, E))
         self.fig_int, self.ax_int, self.canvas_int = self.initialize_graph('Input Signal','t','x(t)')
         self.fig_sin,self.ax_sin, self.canvas_sin = self.initialize_graph('Sinosoidal Signal','t','x(t)')
+        self.fig_sin_sampled,self.ax_sin_sampled, self.canvas_sin_sampled = self.initialize_graph('Sampled Sinosoidal','t','x(t)')
 
-        self.canvas_int.get_tk_widget().grid(column=4, row=0,columnspan=4)
+        self.canvas_int.get_tk_widget().grid(column=8, row=0,columnspan=4)
         self.canvas_sin.get_tk_widget().grid(column=0, row=0,columnspan=4)
+        self.canvas_sin_sampled.get_tk_widget().grid(column=4, row=0,columnspan=4)
+
         filename_label.grid(column=0, row=1,sticky=(W, E))
         filename_entry.grid(column=1, row=1, columnspan=3, sticky=(W, E))
 
@@ -80,10 +83,10 @@ class Task2UI(Tab):
         sampling_btn = ttk.Button(self.frame, text=f"Sampling {self.selected_type.get()} Wave",command=self.on_click_Sampling)
         sampling_btn.grid(column=0, row=9,columnspan=3,sticky=(W, E))
         save_sin_output.grid(column=0, row=10,columnspan=4,sticky=(W, E))
-        read_input.grid(column=4,row=5,columnspan=2,sticky=(W, E))
-        interpolate_input.grid(column=6,row=5,columnspan=2,sticky=(W, E))
-        save_interpolation_output.grid(column=4,row=6,columnspan=2,sticky=(W, E))
-        clear__interpolation_output.grid(column=6,row=6,columnspan=2,sticky=(W, E))
+        read_input.grid(column=8,row=1,columnspan=2,sticky=(W, E))
+        interpolate_input.grid(column=10,row=1,columnspan=2,sticky=(W, E))
+        save_interpolation_output.grid(column=8,row=2,columnspan=2,sticky=(W, E))
+        clear__interpolation_output.grid(column=10,row=2,columnspan=2,sticky=(W, E))
 
     def on_click_generate(self):
         t,x_t = GenerateSinCos.generate_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get())
@@ -98,7 +101,7 @@ class Task2UI(Tab):
         signal = Signal(n,x_n)
         self.Sin=signal
         continous_out = signal
-        self.plot_discrete_graph(self.ax_sin,self.canvas_sin,signal,f"Sampling {self.selected_type.get()} Signal")
+        self.plot_discrete_graph(self.ax_sin_sampled,self.canvas_sin_sampled,signal,f"Sampling {self.selected_type.get()} Signal")
 
 
     def plot_continous_graph(self,ax,canvas,signal,title):
