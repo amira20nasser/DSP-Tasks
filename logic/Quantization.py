@@ -1,5 +1,7 @@
 import numpy as np 
+
 from logic.basic_signal_operations import *
+
 
 class Quatization:
 
@@ -8,23 +10,23 @@ class Quatization:
         x_n = signal.y
         mx_value = max(x_n)
         mn_value = min(x_n)
-        print(mx_value)
-        print(mn_value)
-        step = (mx_value - mn_value) / levels
+        print(f"max V->{mx_value}")
+        print(f"min V->{mn_value}")
+        print(f"#LEVELS->{levels}")
+        step = np.round((mx_value - mn_value) / levels,4)
+        print(f"Each step->{step}")
         intervals = np.arange(mn_value, mx_value+step, step)
-        print(intervals)
-        # print(step)
-        # ranges = [[mn_value,np.round(mn_value+step,3)]]
-        # value = mn_value
-        # for i in range(levels-1):
-        #     value = np.round(value + step, 3)
-        #     if (value+step > mx_value):
-        #         ranges.append([value,mx_value])
-        #         break
-        #     ranges.append([value,np.round(value + step, 3)])
-        # print(ranges)  
-        # return index of interval that belong to 
-        belong_interval = np.digitize(x_n, intervals)
-        x_q = [(intervals[i - 1] + intervals[i]) / 2 for i in belong_interval]
+        print(f"intervals {intervals}")
+     
+        # return index of interval that belongs to 
+        interval_index = np.digitize(x_n, intervals)
+        print(f"index intervals{interval_index}")
+        x_q = [np.round((intervals[i - 1] + intervals[i]) / 2,4) for i in interval_index]
+
+        bits = int(np.log2(levels))
+        encoded_index = [format(index-1,f'0{bits}b') for index in interval_index]
+        print("ENCODED INDICIES")
+        print(encoded_index)
+        print("Quantized Sampled")
         print(x_q)
-        return belong_interval, x_q
+        return interval_index, x_q,encoded_index

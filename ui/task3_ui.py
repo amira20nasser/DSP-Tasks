@@ -53,11 +53,11 @@ class Task3UI(Tab):
         if self.A == None or (self.levels_entry.get()==None and self.bits_entry==None):
             messagebox.showinfo("DSP", "MUST ENTER ALL VALUES sampled_sig,#levels,#bits")
             return   
-        bits,x_q = [],[]  
-        if self.isSelectedLevels: 
-            bits,x_q = Quatization.quantize_signal(self.A,self.levels.get())
+        index_intervals,x_q = [],[]  
+        if self.isSelectedLevels.get(): 
+            index_intervals,x_q = Quatization.quantize_signal(self.A,self.levels.get())
         else:
-            bits,x_q = Quatization.quantize_signal(self.A,2**self.bits.get())
+            index_intervals,x_q = Quatization.quantize_signal(self.A,2**self.bits.get())
 
         self.ax_quantized.plot(self.A.x, x_q),
         self.canvas_quantized.draw()
