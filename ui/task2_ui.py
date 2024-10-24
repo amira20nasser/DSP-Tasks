@@ -109,7 +109,7 @@ class Task2UI(Tab):
         if self.A==None:
             show_message_box("DSP" , "Please upload signal A")
         f = interp1d(signal.x, signal.y, kind='cubic')
-        xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.1)
+        xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.01)
         ynew = f(xnew)   # use interpolation function returned by `interp1d`
         self.Interpolation=Signal(xnew,ynew)
         ax.set_title('Input Signal Interpolated')
