@@ -8,6 +8,7 @@ class Task3UI(Tab):
         super().__init__(notebook,name)
         self.interval_indices=None
         self.encoded_indices=None
+        self.error=None
         self.fig_original, self.ax_original, self.canvas_original = self.initialize_graph('Input Sampled Signal(s)','n','x(n)')
         self.fig_quantized,self.ax_quantized, self.canvas_quantized = self.initialize_graph('Quantized Signal','-','x_q(n)')
         self.fig_error, self.ax_error, self.canvas_error = self.initialize_graph('Quantization Error','x_q(n)','error_q')
@@ -66,9 +67,9 @@ class Task3UI(Tab):
             return   
         index_intervals,x_q = [],[]  
         if self.isSelectedLevels.get(): 
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.A,self.levels.get())
+            interval_index,x_q,encoded_index,error = Quatization.quantize_signal(self.A,self.levels.get())
         else:
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.A,2**self.bits.get())
+            interval_index,x_q,encoded_index,error = Quatization.quantize_signal(self.A,2**self.bits.get())
 
         # self.ax_quantized.plot(self.A.x, x_q),
         # self.canvas_quantized.draw()
