@@ -6,6 +6,8 @@ from logic.Quantization import *
 class Task3UI(Tab):
     def __init__(self,notebook,name):
         super().__init__(notebook,name)
+        self.interval_indices=None
+        self.encoded_indices=None
         self.fig_original, self.ax_original, self.canvas_original = self.initialize_graph('Input Sampled Signal(s)','n','x(n)')
         self.fig_quantized,self.ax_quantized, self.canvas_quantized = self.initialize_graph('Quantized Signal','-','x_q(n)')
         self.fig_error, self.ax_error, self.canvas_error = self.initialize_graph('Quantization Error','x_q(n)','error_q')
@@ -36,7 +38,7 @@ class Task3UI(Tab):
         quantized_sig = ttk.Button(master=self.frame, text="Show Quantized Signal",command=self.on_click_quantized) 
         quantized_sig.grid(column=1,row=1,sticky=(W))
 
-        save_output=ttk.Button(self.frame,text="Save Output",command=lambda: self.saveOutput(self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
+        save_output=ttk.Button(self.frame,text="Save Output",command=lambda: self.saveOutput(self.encoded_indices,self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
         clear_output=ttk.Button(self.frame,text="Clear Output",command=lambda:self.clearOutput('Out',self.ax_quantized,self.canvas_quantized),bootstyle=(SUCCESS,OUTLINE))
         save_output.grid(column=1,row=2,sticky=(W))
         clear_output.grid(column=1,row=3,sticky=(W))
@@ -71,9 +73,26 @@ class Task3UI(Tab):
         # self.ax_quantized.plot(self.A.x, x_q),
         # self.canvas_quantized.draw()
         self.Out=Signal(self.A.x,x_q)
+        self.interval_indices=interval_index
+        self.encoded_indices=encoded_index
         self.plot_discrete_graph(self.ax_quantized,self.canvas_quantized,self.Out, "Qauntized Signal")
         self.ax_quantized.set_xlabel('n')
+    def saveOutput(self, interval_indices, quantized_values, file):
+        if interval_indices == None or quantized_values == None:
+            show_message_box("DSP" , "No output signal to save")
+        elif not file :
+            show_message_box("DSP" , "Please enter save file name")
+        else:
+            with open(file, 'w') as f:
+                # Write header information
+                f.write('0\n0\n' + str(len(interval_indices)) + '\n')
+                
+                # Iterate through both arrays and write to file
+                for interval_index, quantized_value in zip(interval_indices, quantized_values):
+                    f.write(f"{interval_index} {quantized_value}\n")
+
+            show_message_box("DSP" , "Signal saved successfully")
 
 
 
-   
+    
