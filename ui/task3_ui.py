@@ -36,7 +36,16 @@ class Task3UI(Tab):
         quantized_sig = ttk.Button(master=self.frame, text="Show Quantized Signal",command=self.on_click_quantized) 
         quantized_sig.grid(column=1,row=1,sticky=(W))
 
-    
+        save_output=ttk.Button(self.frame,text="Save Output",command=lambda: self.saveOutput(self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
+        clear_output=ttk.Button(self.frame,text="Clear Output",command=lambda:self.clearOutput('Out',self.ax_quantized,self.canvas_quantized),bootstyle=(SUCCESS,OUTLINE))
+        save_output.grid(column=1,row=2,sticky=(W))
+        clear_output.grid(column=1,row=3,sticky=(W))
+        filename_label = ttk.Label(self.frame, text="Save file name:")
+        self.save_file = StringVar()
+        filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
+        filename_label.grid(column=1,row=4,sticky=(W))
+        filename_entry.grid(column=1,row=5,sticky=(W))
+
     def toggle_input(self):
         if self.isSelectedLevels.get():
             self.levels_entry.config(state=['normal'])
@@ -55,13 +64,15 @@ class Task3UI(Tab):
             return   
         index_intervals,x_q = [],[]  
         if self.isSelectedLevels.get(): 
-            index_intervals,x_q = Quatization.quantize_signal(self.A,self.levels.get())
+            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.A,self.levels.get())
         else:
-            index_intervals,x_q = Quatization.quantize_signal(self.A,2**self.bits.get())
+            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.A,2**self.bits.get())
 
-        self.ax_quantized.plot(self.A.x, x_q),
-        self.canvas_quantized.draw()
-
+        # self.ax_quantized.plot(self.A.x, x_q),
+        # self.canvas_quantized.draw()
+        self.Out=Signal(self.A.x,x_q)
+        self.plot_discrete_graph(self.ax_quantized,self.canvas_quantized,self.Out, "Qauntized Signal")
+        self.ax_quantized.set_xlabel('n')
 
 
 

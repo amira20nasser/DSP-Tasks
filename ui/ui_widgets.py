@@ -65,9 +65,6 @@ class Tab:
     def clearOutput(self,sig,ax,canvas):
         setattr(self,'Out',None)
         ax.clear()
-        ax.set_title('Output Signal')
-        ax.set_xlabel('t')
-        ax.set_ylabel('x(t)')
         canvas.draw()
 
     def initialize_graph(self,title,xlabel,ylabel):
