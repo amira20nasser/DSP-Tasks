@@ -1,5 +1,8 @@
 import numpy as np
+from tkinter import messagebox
 import matplotlib.pyplot as plt
+from scipy.interpolate import interp1d
+from logic.basic_signal_operations import Signal
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
 class Visualizer:
@@ -29,8 +32,9 @@ class Visualizer:
         self.canvas.draw()
         
     def interpolate(self,signal):
-        if self.A==None:
-            show_message_box("DSP" , "Please upload signal")
+        if signal==None:
+            messagebox.showerror("DSP" , "Please upload signal to interpolate")
+
         f = interp1d(signal.x, signal.y, kind='cubic')
         xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.01)
         ynew = f(xnew)   # use interpolation function returned by `interp1d`
