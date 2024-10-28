@@ -19,9 +19,6 @@ class Task2UI(Tab):
         interpolate_input= ttk.Button(self.frame,text="Interpolate Input",command=lambda: self.interpolate(self.ax_int,self.canvas_int,self.A,''))
         self.continous_out = None
         self.discrete_out = None
-        
-        # self.ax_int.plot(np.random.rand(1000000,),np.zeros(1000000))
-        # self.canvas_int.draw()
 
         save_interpolation_output=ttk.Button(self.frame,text="Save Interpolation",command=lambda: self.saveOutput(self.Interpolation,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
         clear__interpolation_output=ttk.Button(self.frame,text="Clear Interpolation",command=lambda:self.clearOutput('Interpolation',self.ax_int,self.canvas_int),bootstyle=(SUCCESS,OUTLINE))
@@ -104,20 +101,4 @@ class Task2UI(Tab):
         self.plot_discrete_graph(self.ax_sin_sampled,self.canvas_sin_sampled,signal,f"Sampling {self.selected_type.get()} Signal")
 
 
-    def plot_continous_graph(self,ax,canvas,signal,title):
-        ax.set_title(title)
-        ax.plot(signal.x, signal.y),
-        canvas.draw()
-    def interpolate(self,ax,canvas,signal,title):
-        if self.A==None:
-            show_message_box("DSP" , "Please upload signal A")
-        f = interp1d(signal.x, signal.y, kind='cubic')
-        xnew = np.arange(np.min(signal.x),np.max(signal.x),step=0.01)
-        ynew = f(xnew)   # use interpolation function returned by `interp1d`
-        self.Interpolation=Signal(xnew,ynew)
-        ax.set_title('Input Signal Interpolated')
-        ax.plot(signal.x, signal.y, 'o', xnew, ynew, '-')
-        canvas.draw()
 
-    def add(self):
-        super().add()  
