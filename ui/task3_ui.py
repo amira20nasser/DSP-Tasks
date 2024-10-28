@@ -2,6 +2,7 @@ import ttkbootstrap as ttk
 from ui.ui_widgets import *
 import os
 from logic.Quantization import *
+from task3.QuanTest1 import  *
 
 class Task3UI(Tab):
     def __init__(self,notebook,name):
@@ -70,7 +71,8 @@ class Task3UI(Tab):
             interval_index,x_q,encoded_index,error = Quatization.quantize_signal(self.A,self.levels.get())
         else:
             interval_index,x_q,encoded_index,error = Quatization.quantize_signal(self.A,2**self.bits.get())
-
+        
+        QuantizationTest1("task3\Test 1\Quan1_Out.txt",encoded_index,x_q)
         # self.ax_quantized.plot(self.A.x, x_q),
         # self.canvas_quantized.draw()
         self.Out=Signal(self.A.x,x_q)
@@ -78,6 +80,7 @@ class Task3UI(Tab):
         self.encoded_indices=encoded_index
         self.plot_discrete_graph(self.ax_quantized,self.canvas_quantized,self.Out, "Qauntized Signal")
         self.ax_quantized.set_xlabel('n')
+
     def saveOutput(self, interval_indices, quantized_values, file):
         if interval_indices == None or quantized_values == None:
             show_message_box("DSP" , "No output signal to save")
