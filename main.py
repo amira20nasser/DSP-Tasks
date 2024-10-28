@@ -8,8 +8,8 @@ def main():
     ui = UI()
     root, notebook = ui.initialize()
 
-    # task3_tab = Task3UI(notebook, "Task 3")
-    # task3_tab.add()
+    task3_tab = Task3UI(notebook, "Task 3")
+    task3_tab.add()
 
     task2_tab = Task2UI(notebook, "Task 2")
     task2_tab.add()

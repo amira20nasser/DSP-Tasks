@@ -25,12 +25,17 @@ class Quatization:
         x_q = [np.round((intervals[i - 1] + intervals[i]) / 2,2) if i > 0 else np.round(intervals[0],2) for i in interval_index]
         bits = int(np.log2(levels))
         encoded_index = [format(index-1,f'0{bits}b') for index in interval_index]
-        error = x_q - x_n
 
         print("ENCODED INDICIES")
         print(encoded_index)
         print("Quantized Sampled")
         print(x_q)
+
+        return interval_index, x_q,encoded_index
+        
+    @staticmethod
+    def calculate_error(x_q,x_n):
+        error = x_q - x_n
         print("Quantization Error")
         print(error)
-        return interval_index, x_q,encoded_index, error
+        return error 
