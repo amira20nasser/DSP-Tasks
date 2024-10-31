@@ -3,6 +3,7 @@ from ui.ui_widgets import *
 import os
 from logic.Quantization import *
 from task3.QuanTest1 import  *
+from task3.QuanTest2 import *
 from visualizer import *
 from file_manpulator import *
 
@@ -85,6 +86,7 @@ class Task3UI(Tab):
         self.quantized_signal=Signal(self.sampled_signal.x , x_q)
         self.quantized_visualizer.plot_discrete_graph(signal=self.quantized_signal)
         QuantizationTest1("task3\Test 1\Quan1_Out.txt",encoded_index,x_q)
+        QuantizationTest2("task3\Test 2\Quan2_Out.txt",interval_index,encoded_index,x_q,Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y))
 
     def on_click_show_err(self):
         error = Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y)

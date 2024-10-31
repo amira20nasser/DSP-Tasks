@@ -18,11 +18,13 @@ class Quatization:
         intervals = np.arange(mn_value, mx_value+step, step)
         print(f"intervals {intervals}")
         x_n = np.clip(x_n, a_min=intervals[0], a_max=intervals[-1])
+        print("X_n",x_n)
         # return index of interval that belongs to 
         interval_index = np.digitize(x_n, intervals,right=True)
-        interval_index= [x if x >=1 else 1 for x in interval_index]
+        interval_index= [x if x >=1  else 1 for x in interval_index]
+        # interval_index= [x if x <= levels  else levels for x in interval_index]
         print(f"index intervals{interval_index}")
-        x_q = [np.round((intervals[i - 1] + intervals[i]) / 2,2) if i > 0 else np.round(intervals[0],2) for i in interval_index]
+        x_q = [np.round((intervals[i - 1] + intervals[i]) / 2,2)  for i in interval_index]
         bits = int(np.log2(levels))
         encoded_index = [format(index-1,f'0{bits}b') for index in interval_index]
 
