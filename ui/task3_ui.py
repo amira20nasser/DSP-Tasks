@@ -2,8 +2,8 @@ import ttkbootstrap as ttk
 from ui.ui_widgets import *
 import os
 from logic.Quantization import *
-from task3.QuanTest1 import  *
-from task3.QuanTest2 import *
+from task3_test.QuanTest1 import  *
+from task3_test.QuanTest2 import *
 from visualizer import *
 from file_manpulator import *
 

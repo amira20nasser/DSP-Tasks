@@ -1,12 +1,15 @@
-
 from ui.ui_widgets import UI
 from ui.task1_ui import Task1UI
 from ui.task2_ui import Task2UI
 from ui.task3_ui import Task3UI
+from ui.task4_ui import Task4UI
 
 def main():
     ui = UI()
     root, notebook = ui.initialize()
+
+    task4_tab = Task4UI(notebook,"Task 4")
+    task4_tab.add()
 
     task3_tab = Task3UI(notebook, "Task 3")
     task3_tab.add()

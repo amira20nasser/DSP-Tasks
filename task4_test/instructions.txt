@@ -1,0 +1,2 @@
+1.The user interface (UI) should be able to display the output signal for each task, as demonstrated in the previous tasks.
+2.You should call the compare signal function used in earlier tasks to determine whether the test cases pass.

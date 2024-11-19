@@ -1,0 +1,11 @@
+Test 1:
+MovingAvg_input.txt
+Window size =3
+
+Test 2:
+
+MovingAvg_input.txt
+Window size =5
+
+
+USE Compare Signals function to test your code
