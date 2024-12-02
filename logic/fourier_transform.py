@@ -2,10 +2,24 @@ import numpy as np
 import math
 import cmath
 class FourierTransform:
+    
     @staticmethod
     def dtf_transform(signal ,fs):
-        print()
-        # return amplitude and phaseshift 
+        x_k_amplitude = []
+        x_k_phase =[]
+        length = len(signal)
+        for k in range(length):
+            for n in range(length):
+                pow=-1j*k*math.pi*n/length
+                res=signal[n]*math.exp(pow)
+                amplitude=cmath.polar(res)[0]
+                phase=cmath.polar(res)[1]
+            x_k_amplitude.append(amplitude)
+            x_k_phase.append(phase)
+        print("amplitude", x_k_amplitude)
+        print("phase", x_k_phase)
+
+        return x_k_amplitude, x_k_phase       # return amplitude and phaseshift 
        
     @staticmethod
     def idtf_transform(amplitude, phaseshift):
