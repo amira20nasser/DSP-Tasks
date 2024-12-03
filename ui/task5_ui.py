@@ -27,38 +27,21 @@ class Task5UI(Tab):
         self.frequency_amplitude_visualizer.canvas.get_tk_widget().grid(column=1, row=0,)
         self.frequency_phase_visualizer.canvas.get_tk_widget().grid(column=1, row=2,)
 
-        upload_time_sig = ttk.Button(master=self.frame, text="Upload Sampled Signal",command=self.on_click_upload) 
-        upload_time_sig.grid(column=0,row=1,sticky=(W))
+        upload_time_sig = ttk.Button(master=self.frame, text="Upload Time Signal",command=lambda:self.on_click_upload(True)) 
+        upload_time_sig.grid(column=0,row=2,sticky=(W))
 
-        upload_freq_sig = ttk.Button(master=self.frame, text="Upload Sampled Signal",command=self.on_click_upload) 
+        upload_freq_sig = ttk.Button(master=self.frame, text="Upload Frequency Signal",command=lambda: self.on_click_upload(False)) 
         upload_freq_sig.grid(column=0,row=3,sticky=(W))
 
-        self.isSelectedLevels.set(True)
-        radio_levels = ttk.Radiobutton(self.frame,text="#Levels", variable=self.isSelectedLevels,value=1,command=self.toggle_input)
-        self.levels_entry = ttk.Entry(self.frame,state=["normal"],textvariable=self.levels)
 
-        radio_levels.grid(column=0,row=2,sticky=(W),)
-        self.levels_entry.grid(column=0,row=3, sticky=(W))
+        self.fs_entry = ttk.Entry(master=self.frame,textvariable=self.fs)
+        self.fs_entry.grid(column=0,row=1, sticky=(W),)
 
-        radio_bits = ttk.Radiobutton(self.frame,text="#bits", variable=self.isSelectedLevels,value=0,command=self.toggle_input)
-        self.bits_entry = ttk.Entry(self.frame,state=["disabled"],textvariable=self.bits)
-        radio_bits.grid(column=0,row=4,sticky=(W))
-        self.bits_entry.grid(column=0,row=5, sticky=(W),)
+        dft = ttk.Button(master=self.frame, text="DFT",command=self.on_click_dft) 
+        dft.grid(column=1,row=1,sticky=(W))
 
-        quantized_sig = ttk.Button(master=self.frame, text="Show Quantized Signal",command=self.on_click_quantized) 
-        quantized_sig.grid(column=1,row=1,sticky=(W))
-
-        # save_output=ttk.Button(self.frame,text="Save Output",command=lambda: self.saveOutput(self.encoded_indices,self.Out,filename_entry.get()),bootstyle=(SUCCESS,OUTLINE))
-        clear_output=ttk.Button(self.frame,text="Clear Quantized Output",command=self.quantized_visualizer.clear_plotting,bootstyle=(SUCCESS,OUTLINE))
-        # save_output.grid(column=1,row=2,sticky=(W))
-        clear_output.grid(column=1,row=3,sticky=(W))
-        # filename_label = ttk.Label(self.frame, text="Save file name:")
-        # filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
-        # filename_label.grid(column=1,row=4,sticky=(W))
-        # filename_entry.grid(column=1,row=5,sticky=(W))
-        
-        err_sig = ttk.Button(master=self.frame, text="Show Error",command=self.on_click_show_err) 
-        err_sig.grid(column=2,row=1,sticky=(W))
+        idft = ttk.Button(master=self.frame, text="IDFT",command=self.on_click_idft) 
+        idft.grid(column=1,row=1,sticky=(W))
 
     def toggle_input(self):
         if self.isSelectedLevels.get():
@@ -69,13 +52,26 @@ class Task5UI(Tab):
             self.bits_entry.config(state=['normal'])     
     
     
-    def on_click_upload(self):
+    def on_click_upload(self,time_domain):
         x,y = self.file_manpulator.loadSignal()
-        self.sampled_signal = Signal(x,y)
-        self.original_visualizer.plot_discrete_graph(self.sampled_signal)
-    def on_click_quantized(self):
-        if self.sampled_signal == None or (self.levels_entry.get()==None and self.bits_entry==None):
-            messagebox.showerror("DSP", "MUST ENTER ALL VALUES sampled_sig,#levels,#bits")
+        if time_domain:
+            self.time_domain_signal = Signal(x,y)
+            self.time_amplitude_visualizer.plot_discrete_graph(self.time_domain_signal)
+
+        else:
+            self.frequency_domain_signal=Signal(x,y)
+            n=2*math.pi*fs/len(x)
+            self.k= [n*i for i in range(len(x))]
+            self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(self.k,x))
+            self.frequency_phase_visualizer.plot_discrete_graph(Signal(self.k,y))
+
+    def on_click_dft(self):
+        if self.time_domain_signal == None:
+            messagebox.showerror("DSP", "MUST ENTER SIGNAL")
+            return   
+    def on_click_idft(self):
+        if self.frequency_domain_signal == None:
+            messagebox.showerror("DSP", "MUST ENTER SIGNAL")
             return   
 
         index_intervals,x_q,encoded_index = [],[] ,[]

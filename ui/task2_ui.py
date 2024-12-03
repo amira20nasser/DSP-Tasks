@@ -37,7 +37,6 @@ class Task2UI(Tab):
         filename_label = ttk.Label(self.frame, text="Save file name:")
         filename_entry = ttk.Entry(self.frame, textvariable=self.save_file)
         self.frame.grid(column=0, row=0,sticky=(W, E))
- 
 
         self.wave_visualizer.canvas.get_tk_widget().grid(column=0, row=0,columnspan=4)
         self.wave_sampled_visualizer.canvas.get_tk_widget().grid(column=4, row=0,columnspan=4)
