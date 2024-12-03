@@ -7,7 +7,7 @@ from task3_test.QuanTest2 import *
 from visualizer import *
 from file_manpulator import *
 from logic.fourier_transform import *
-
+import math 
 class Task5UI(Tab):
     def initialize_ui_variables(self):       
         # self.save_file = StringVar()
@@ -55,9 +55,9 @@ class Task5UI(Tab):
         else:
             self.frequency_domain_signal=Signal(x,y)
             n=2*math.pi*self.fs.get()/len(x)
-            self.k= [n*i for i in range(len(x))]
-            self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(self.k,x))
-            self.frequency_phase_visualizer.plot_discrete_graph(Signal(self.k,y))
+            k= [n*i for i in range(len(x))]
+            self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,x))
+            self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,y))
 
     def on_click_dft(self):
         if self.time_domain_signal == None:
@@ -77,16 +77,8 @@ class Task5UI(Tab):
         if self.frequency_domain_signal == None:
             messagebox.showerror("DSP", "MUST ENTER SIGNAL")
             return   
-
-        index_intervals,x_q,encoded_index = [],[] ,[]
-        if self.isSelectedLevels.get(): 
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.sampled_signal,self.levels.get())
-        else:
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.sampled_signal,2**self.bits.get())
-        
-        self.quantized_signal=Signal(self.sampled_signal.x , x_q)
-        self.quantized_visualizer.plot_discrete_graph(signal=self.quantized_signal)
-        QuantizationTest1("task3\Test 1\Quan1_Out.txt",encoded_index,x_q)
-        QuantizationTest2("task3\Test 2\Quan2_Out.txt",interval_index,encoded_index,x_q,Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y))
+        self.time_domain_signal= FourierTransform.idtf_transform(self.frequency_domain_signal.x,self.frequency_domain_signal.y)
+        x=[i for i in range(len(self.time_domain_signal))]
+        self.time_amplitude_visualizer.plot_discrete_graph(Signal(x,self.time_domain_signal))
 
     

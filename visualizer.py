@@ -30,7 +30,7 @@ class Visualizer:
         self.ax.set_title(self.title)
         self.ax.stem(signal.x, signal.y, linefmt=line_colors[np.random.randint(4)],markerfmt="o" , basefmt="k"),
         self.canvas.draw()
-        
+    
     def interpolate(self,signal):
         if signal==None:
             messagebox.showerror("DSP" , "Please upload signal to interpolate")
