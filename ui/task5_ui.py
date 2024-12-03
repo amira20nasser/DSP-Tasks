@@ -6,6 +6,7 @@ from task3_test.QuanTest1 import  *
 from task3_test.QuanTest2 import *
 from visualizer import *
 from file_manpulator import *
+from logic.fourier_transform import *
 
 class Task5UI(Tab):
     def initialize_ui_variables(self):       
@@ -38,29 +39,22 @@ class Task5UI(Tab):
         self.fs_entry.grid(column=0,row=1, sticky=(W),)
 
         dft = ttk.Button(master=self.frame, text="DFT",command=self.on_click_dft) 
-        dft.grid(column=1,row=1,sticky=(W))
+        dft.grid(column=1,row=2,sticky=(W))
 
         idft = ttk.Button(master=self.frame, text="IDFT",command=self.on_click_idft) 
         idft.grid(column=1,row=1,sticky=(W))
 
-    def toggle_input(self):
-        if self.isSelectedLevels.get():
-            self.levels_entry.config(state=['normal'])
-            self.bits_entry.config(state=['disabled'])
-        else:
-            self.levels_entry.config(state=['disabled'])
-            self.bits_entry.config(state=['normal'])     
-    
     
     def on_click_upload(self,time_domain):
         x,y = self.file_manpulator.loadSignal()
         if time_domain:
+            self.fs.set(len(x))
             self.time_domain_signal = Signal(x,y)
             self.time_amplitude_visualizer.plot_discrete_graph(self.time_domain_signal)
 
         else:
             self.frequency_domain_signal=Signal(x,y)
-            n=2*math.pi*fs/len(x)
+            n=2*math.pi*self.fs.get()/len(x)
             self.k= [n*i for i in range(len(x))]
             self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(self.k,x))
             self.frequency_phase_visualizer.plot_discrete_graph(Signal(self.k,y))
@@ -68,7 +62,17 @@ class Task5UI(Tab):
     def on_click_dft(self):
         if self.time_domain_signal == None:
             messagebox.showerror("DSP", "MUST ENTER SIGNAL")
-            return   
+            return
+
+        amp, phase =  FourierTransform.dtf_transform(self.time_domain_signal.y,self.fs.get())
+        n = 2*math.pi*self.fs.get()/len(self.time_domain_signal.x)
+        k= [n*i for i in range(len(self.time_domain_signal.x))]
+        self.frequency_amplitude_visualizer.clear_plotting()
+        self.frequency_phase_visualizer.clear_plotting()
+        self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,amp))
+        self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,phase))
+
+
     def on_click_idft(self):
         if self.frequency_domain_signal == None:
             messagebox.showerror("DSP", "MUST ENTER SIGNAL")
@@ -84,27 +88,5 @@ class Task5UI(Tab):
         self.quantized_visualizer.plot_discrete_graph(signal=self.quantized_signal)
         QuantizationTest1("task3\Test 1\Quan1_Out.txt",encoded_index,x_q)
         QuantizationTest2("task3\Test 2\Quan2_Out.txt",interval_index,encoded_index,x_q,Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y))
-
-    def on_click_show_err(self):
-        error = Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y)
-        self.error_visualizer.plot_continous_graph(Signal(self.sampled_signal.x,error))
-
-    # def saveOutput(self, interval_indices, quantized_values, file):
-    #     if interval_indices == None or quantized_values == None:
-    #         show_message_box("DSP" , "No output signal to save")
-    #     elif not file :
-    #         show_message_box("DSP" , "Please enter save file name")
-    #     else:
-    #         with open(file, 'w') as f:
-    #             # Write header information
-    #             f.write('0\n0\n' + str(len(interval_indices)) + '\n')
-                
-    #             # Iterate through both arrays and write to file
-    #             for interval_index, quantized_value in zip(interval_indices, quantized_values):
-    #                 f.write(f"{interval_index} {quantized_value}\n")
-
-    #         show_message_box("DSP" , "Signal saved successfully")
-
-
 
     
