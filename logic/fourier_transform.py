@@ -11,7 +11,7 @@ class FourierTransform:
         for k in range(fs): 
             res = 0
             for n in range(length):
-                pow=-1j*k*math.pi*n/length
+                pow=-1j*k*2*math.pi*n/length
                 res+=signal[n]*cmath.exp(pow)
             amplitude=cmath.polar(res)[0]
             phase=cmath.polar(res)[1]
