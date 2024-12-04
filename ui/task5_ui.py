@@ -17,6 +17,7 @@ class Task5UI(Tab):
         self.time_domain_signal = None
         self.frequency_domain_signal = None
         self.fs = IntVar()
+        self.fs.set(8)
         self.file_manpulator = FileManpulator()
         self.time_amplitude_visualizer = Visualizer(self.frame,'Time Domain Signal','n','x(n)')
         self.frequency_amplitude_visualizer = Visualizer(self.frame,'Frequency Domain (Amplitude)','k','x(k)')
@@ -29,7 +30,7 @@ class Task5UI(Tab):
 
         self.time_amplitude_visualizer.canvas.get_tk_widget().grid(column=0, row=0,)
         self.frequency_amplitude_visualizer.canvas.get_tk_widget().grid(column=1, row=0,)
-        self.frequency_phase_visualizer.canvas.get_tk_widget().grid(column=1, row=2,)
+        self.frequency_phase_visualizer.canvas.get_tk_widget().grid(column=1, row=6,)
         # self.reconstructed_signal.canvas.get_tk_widget().grid(column=2, row=0,)
 
         upload_time_sig = ttk.Button(master=self.frame, text="Upload Time Signal",command=lambda:self.on_click_upload(True)) 
@@ -43,10 +44,10 @@ class Task5UI(Tab):
         self.fs_entry.grid(column=0,row=1, sticky=(W),)
 
         dft = ttk.Button(master=self.frame, text="DFT",command=self.on_click_dft) 
-        dft.grid(column=1,row=2,sticky=(W))
+        dft.grid(column=0,row=4,sticky=(W))
 
         idft = ttk.Button(master=self.frame, text="IDFT",command=self.on_click_idft) 
-        idft.grid(column=1,row=1,sticky=(W))
+        idft.grid(column=0,row=5,sticky=(W))
 
     
     def on_click_upload(self,time_domain):
