@@ -8,6 +8,7 @@ from visualizer import *
 from file_manpulator import *
 from logic.fourier_transform import *
 from task4_test.testT4 import *
+import math 
 
 class Task5UI(Tab):
     def initialize_ui_variables(self):       
@@ -58,9 +59,9 @@ class Task5UI(Tab):
         else:
             self.frequency_domain_signal=Signal(x,y)
             n=2*math.pi*self.fs.get()/len(x)
-            self.k= [n*i for i in range(len(x))]
-            self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(self.k,x))
-            self.frequency_phase_visualizer.plot_discrete_graph(Signal(self.k,y))
+            k= [n*i for i in range(len(x))]
+            self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,x))
+            self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,y))
 
     def on_click_dft(self):
         if self.time_domain_signal == None:
@@ -78,12 +79,17 @@ class Task5UI(Tab):
         # SignalComapreAmplitude(SignalInput = [] ,SignalOutput= [])    
 
     def on_click_idft(self):
-        # if self.frequency_domain_signal == None:
-        #     messagebox.showerror("DSP", "MUST ENTER SIGNAL")
-        #     return   
-        x_n =  FourierTransform.idtf_transform(self.amp, self.phase )
-        k= [i for i in range(len(x_n))]
-        # self.reconstructed_signal.clear_plotting()
+       
+        if self.frequency_domain_signal == None:
+            messagebox.showerror("DSP", "MUST ENTER SIGNAL")
+            return   
+        self.time_domain_signal= FourierTransform.idtf_transform(self.frequency_domain_signal.x,self.frequency_domain_signal.y)
+        x=[i for i in range(len(self.time_domain_signal))]
+        self.time_amplitude_visualizer.plot_discrete_graph(Signal(x,self.time_domain_signal))
+        # x_n =  FourierTransform.idtf_transform(self.amp, self.phase )
+        # k= [i for i in range(len(x_n))]
         # self.reconstructed_signal.plot_discrete_graph(Signal(k,x_n))
+        # self.reconstructed_signal.clear_plotting()
         test_task4("task5_test\IDFT\Output_Signal_IDFT.txt",k,x_n)
+
     
