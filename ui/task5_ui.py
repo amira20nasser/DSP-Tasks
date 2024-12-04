@@ -7,6 +7,7 @@ from task3_test.QuanTest2 import *
 from visualizer import *
 from file_manpulator import *
 from logic.fourier_transform import *
+from task4_test.testT4 import *
 
 class Task5UI(Tab):
     def initialize_ui_variables(self):       
@@ -19,6 +20,7 @@ class Task5UI(Tab):
         self.time_amplitude_visualizer = Visualizer(self.frame,'Time Domain Signal','n','x(n)')
         self.frequency_amplitude_visualizer = Visualizer(self.frame,'Frequency Domain (Amplitude)','k','x(k)')
         self.frequency_phase_visualizer = Visualizer(self.frame,'Frequency Domain (Phase)','n','x_q(n)')
+        # self.reconstructed_signal = Visualizer(self.frame,'Reconstructed','n','x_q(n)')
 
     def __init__(self,notebook,name):
         super().__init__(notebook,name)
@@ -27,6 +29,7 @@ class Task5UI(Tab):
         self.time_amplitude_visualizer.canvas.get_tk_widget().grid(column=0, row=0,)
         self.frequency_amplitude_visualizer.canvas.get_tk_widget().grid(column=1, row=0,)
         self.frequency_phase_visualizer.canvas.get_tk_widget().grid(column=1, row=2,)
+        # self.reconstructed_signal.canvas.get_tk_widget().grid(column=2, row=0,)
 
         upload_time_sig = ttk.Button(master=self.frame, text="Upload Time Signal",command=lambda:self.on_click_upload(True)) 
         upload_time_sig.grid(column=0,row=2,sticky=(W))
@@ -64,29 +67,23 @@ class Task5UI(Tab):
             messagebox.showerror("DSP", "MUST ENTER SIGNAL")
             return
 
-        amp, phase =  FourierTransform.dtf_transform(self.time_domain_signal.y,self.fs.get())
+        self.amp, self.phase =  FourierTransform.dtf_transform(self.time_domain_signal.y,self.fs.get())
         n = 2*math.pi*self.fs.get()/len(self.time_domain_signal.x)
         k= [n*i for i in range(len(self.time_domain_signal.x))]
         self.frequency_amplitude_visualizer.clear_plotting()
         self.frequency_phase_visualizer.clear_plotting()
-        self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,amp))
-        self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,phase))
-
+        self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,self.amp))
+        self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,self.phase))
+        test_task4("task5_test\DFT\Output_Signal_DFT_A,Phase.txt",self.amp,self.phase)
+        # SignalComapreAmplitude(SignalInput = [] ,SignalOutput= [])    
 
     def on_click_idft(self):
-        if self.frequency_domain_signal == None:
-            messagebox.showerror("DSP", "MUST ENTER SIGNAL")
-            return   
-
-        index_intervals,x_q,encoded_index = [],[] ,[]
-        if self.isSelectedLevels.get(): 
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.sampled_signal,self.levels.get())
-        else:
-            interval_index,x_q,encoded_index = Quatization.quantize_signal(self.sampled_signal,2**self.bits.get())
-        
-        self.quantized_signal=Signal(self.sampled_signal.x , x_q)
-        self.quantized_visualizer.plot_discrete_graph(signal=self.quantized_signal)
-        QuantizationTest1("task3\Test 1\Quan1_Out.txt",encoded_index,x_q)
-        QuantizationTest2("task3\Test 2\Quan2_Out.txt",interval_index,encoded_index,x_q,Quatization.calculate_error(self.quantized_signal.y , self.sampled_signal.y))
-
+        # if self.frequency_domain_signal == None:
+        #     messagebox.showerror("DSP", "MUST ENTER SIGNAL")
+        #     return   
+        x_n =  FourierTransform.idtf_transform(self.amp, self.phase )
+        k= [i for i in range(len(x_n))]
+        # self.reconstructed_signal.clear_plotting()
+        # self.reconstructed_signal.plot_discrete_graph(Signal(k,x_n))
+        test_task4("task5_test\IDFT\Output_Signal_IDFT.txt",k,x_n)
     
