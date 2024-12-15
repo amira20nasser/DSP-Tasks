@@ -76,7 +76,7 @@ class Task5UI(Tab):
         self.frequency_phase_visualizer.clear_plotting()
         self.frequency_amplitude_visualizer.plot_discrete_graph(Signal(k,self.amp))
         self.frequency_phase_visualizer.plot_discrete_graph(Signal(k,self.phase))
-        test_task4("task5_test\DFT\Output_Signal_DFT_A,Phase.txt",self.amp,self.phase)
+        test_task4("task5_test/DFT/Output_Signal_DFT_A,Phase.txt",self.amp,self.phase)
         # SignalComapreAmplitude(SignalInput = [] ,SignalOutput= [])    
 
     def on_click_idft(self):
@@ -84,6 +84,7 @@ class Task5UI(Tab):
         if self.frequency_domain_signal == None:
             messagebox.showerror("DSP", "MUST ENTER SIGNAL")
             return   
+        
         self.time_domain_signal= FourierTransform.idtf_transform(self.frequency_domain_signal.x,self.frequency_domain_signal.y)
         x=[i for i in range(len(self.time_domain_signal))]
         self.time_amplitude_visualizer.plot_discrete_graph(Signal(x,self.time_domain_signal))
@@ -91,6 +92,6 @@ class Task5UI(Tab):
         # k= [i for i in range(len(x_n))]
         # self.reconstructed_signal.plot_discrete_graph(Signal(k,x_n))
         # self.reconstructed_signal.clear_plotting()
-        test_task4("task5_test\IDFT\Output_Signal_IDFT.txt",k,x_n)
+        test_task4("task5_test/IDFT/Output_Signal_IDFT.txt",x, self.time_domain_signal)
 
     

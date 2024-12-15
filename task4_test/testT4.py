@@ -31,7 +31,9 @@ def test_task4(file_name,Your_indices,Your_samples):
         print("Test case failed, your signal have different length from the expected one")
         return
     for i in range(len(Your_indices)):
-        if(Your_indices[i]!=expected_indices[i]):
+        if(abs(Your_indices[i]-expected_indices[i])<0.001):
+            continue
+        else:
             print("Test case failed, your signal have different indicies from the expected one") 
             return
     for i in range(len(expected_samples)):
