@@ -23,6 +23,8 @@ def main():
     task7_tab = Task7UI(notebook,"Task 7")
     task7_tab.add()
 
+    task6_tab = Task6UI(notebook,"Task 6")
+    task6_tab.add()
 
     task5_tab = Task5UI(notebook,"Task 5")
     task5_tab.add()
