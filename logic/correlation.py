@@ -36,10 +36,12 @@ class Correlation:
         signal = Signal(x_result,y_result)
         return signal
 
-
-
-
-
+    @staticmethod
+    def calculate_delay(signal_a,signal_b,fs):
+        corr = Correlation.correlate(signal_a, signal_b)
+        max_corr_idx = np.argmax(corr.y)
+        delay = max_corr_idx / fs
+        return delay, corr
 
 
 
