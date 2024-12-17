@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 from ui.ui_widgets import Tab  
 from utils import *
 from logic.basic_signal_operations import Signal
+from logic.correlation import Correlation
+
 from task1_test.tests import *
 from visualizer import *
 from file_manpulator import *
@@ -56,12 +58,12 @@ class Task6UI(Tab):
         self.output_visualizer.clear_plotting()
 
     def on_click_upload_sig_a(self):
-       x,y =  self.file_manpulator.loadSignal()
+       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal1.txt")
        self.a_signal = Signal(x,y)
        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
 
     def on_click_upload_sig_b(self):
-       x,y =  self.file_manpulator.loadSignal()
+       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal2.txt")
        self.b_signal = Signal(x,y)
        self.input_visualizer.plot_discrete_graph(signal=self.b_signal)   
 
@@ -69,4 +71,9 @@ class Task6UI(Tab):
         self.file_manpulator.saveOutput(signal=self.out,file=self.save_file.get())
 
     def on_click_correlation(self):
-      print("")
+        if self.a_signal==None or self.b_signal==None:
+            show_message_box("DSP" , "Please upload signals A and B")
+            return -1
+        s= Correlation.correlate(self.a_signal,self.b_signal)
+        self.output_visualizer.clear_plotting()
+        self.output_visualizer.plot_discrete_graph(s)

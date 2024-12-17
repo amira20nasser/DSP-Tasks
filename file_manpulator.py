@@ -7,8 +7,11 @@ class FileManpulator:
     def __init__(self):
         self.file = None
         
-    def loadSignal(self):
-        self.file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),title = "Select a text file containing the signal B.",filetypes = (("Text files","*.txt"), ("all files","*.*")))
+    def loadSignal(self,file=None):
+        if file is None:
+            self.file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),title = "Select a text file containing the signal B.",filetypes = (("Text files","*.txt"), ("all files","*.*")))
+        else:
+            self.file=file
         x,y = np.loadtxt(self.file, dtype=float, skiprows=3, delimiter=" ", unpack=True)  
         return x,y
     
