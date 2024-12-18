@@ -47,15 +47,16 @@ class Task6UI(Tab):
 
 
         correlation = ttk.Button(self.frame, text="Calculate Correlation",command=self.on_click_correlation)
-
         delay = ttk.Button(self.frame, text="Calculate Delay",command=self.on_click_calculate_delay)
+        classify = ttk.Button(self.frame, text="Classify Signal",command=self.on_click_classify_signal)
 
 
         fs_label.grid(column=0, row=3,columnspan=1,sticky=(W, E))
         fs_entry.grid(column=1, row=3,columnspan=3,sticky=(W, E))
-        correlation.grid(column=0,row=4,columnspan=4, sticky=(N, W, E, S))
 
+        correlation.grid(column=0,row=4,columnspan=4, sticky=(N, W, E, S))
         delay.grid(column=0,row=5,columnspan=4, sticky=(N, W, E, S))
+        classify.grid(column=0,row=6,columnspan=4, sticky=(N, W, E, S))
 
         self.input_visualizer.canvas.get_tk_widget().grid(column=0, row=0,columnspan=4)
         self.output_visualizer.canvas.get_tk_widget().grid(column=4, row=0,columnspan=4)
@@ -102,6 +103,30 @@ class Task6UI(Tab):
         self.input_visualizer.plot_discrete_graph(signal=self.b_signal)
 
         delay, self.out = Correlation.calculate_delay(self.a_signal,self.b_signal, self.fs.get())
-        print(f"Delay:{delay}")
+        print(f"Delay:{delay} seconds")
         self.output_visualizer.clear_plotting()
         self.output_visualizer.plot_discrete_graph(self.out)
+    
+    def on_click_classify_signal(self):
+        self.input_visualizer.clear_plotting()
+
+        x, y =  self.file_manpulator.loadSignalY("task6_test/Point2 Time analysis/TD_input signal1.txt")
+        self.a_signal = Signal(x,y)
+        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
+
+        down = []
+        down_path="task6_test/point3 Files/Class 1"
+        for f in os.listdir(down_path):
+            x, y = self.file_manpulator.loadSignalY(file=f"{down_path}/{f}")
+            down.append(Signal(x,y))
+        print(f"Loaded down: {len(down)} signals")
+        
+        up = []
+        up_path="task6_test/point3 Files/Class 2"
+        for f in os.listdir(down_path):
+            x, y = self.file_manpulator.loadSignalY(file=f"{down_path}/{f}")
+            up.append(Signal(x,y))
+        print(f"Loaded up: {len(up)} signals")
+
+        Correlation.classify_signal(self.a_signal,up,down)
+        

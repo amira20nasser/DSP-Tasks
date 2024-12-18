@@ -15,6 +15,15 @@ class FileManpulator:
         x,y = np.loadtxt(self.file, dtype=float, skiprows=3, delimiter=" ", unpack=True)  
         return x,y
     
+    def loadSignalY(self,file=None):
+        if file is None:
+            self.file=filedialog.askopenfilename(initialdir = os.path.expanduser( os.getcwd()),title = "Select a text file containing the signal B.",filetypes = (("Text files","*.txt"), ("all files","*.*")))
+        else:
+            self.file=file
+        y = np.loadtxt(self.file, usecols=0, dtype=float)  
+        x = np.arange(0,len(y))
+        return x,y
+
     def saveOutput(self, signal,file):
         if signal == None:
             messagebox.showerror("DSP" , "No output signal to save")
