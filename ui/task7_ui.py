@@ -8,7 +8,9 @@ from logic.basic_signal_operations import Signal
 from utils import *
 from visualizer import *
 from file_manpulator import *
-
+from logic.filters import *
+from logic.filters import Window
+from CompareSignal import *
 class Task7UI(Tab):
     def initialize_ui_variables(self):
         self.input = None
@@ -52,16 +54,134 @@ class Task7UI(Tab):
         save_output.grid(column=4,row=2,columnspan=2,sticky=(W, E))
         clear_output.grid(column=6,row=2,columnspan=2,sticky=(W, E))
 
+        self.sample_freq = IntVar(value=8000)
+        fs_label = ttk.Label(self.frame, text="Value of sample_freq:")
+        fs_input = ttk.Entry(self.frame, textvariable=self.sample_freq)
+        fs_label.grid(column=0, row=3,columnspan=2,sticky=(W, E))
+        fs_input.grid(column=1, row=3,sticky=(W, E),columnspan=3)
+    
+        self.cutoff_freq = IntVar(value=1500)
+        fc_label = ttk.Label(self.frame, text="Value of cutoff_freq:")
+        fc_input = ttk.Entry(self.frame, textvariable=self.cutoff_freq)
+        fc_label.grid(column=4, row=3,columnspan=2,sticky=(W, E))
+        fc_input.grid(column=6, row=3,columnspan=2,sticky=(W, E))
+    
+        self.StopBandAttenuation = IntVar(value=50)
+        sba_label = ttk.Label(self.frame, text="StopBandAttenuation:")
+        sba_input = ttk.Entry(self.frame, textvariable=self.StopBandAttenuation)
+        sba_label.grid(column=0, row=4,columnspan=2,sticky=(W, E))
+        sba_input.grid(column=1, row=4,sticky=(W, E),columnspan=3)
+    
+        self.TransitionBand = IntVar(value=500)
+        tb_label = ttk.Label(self.frame, text="Value of TransitionBand(width):")
+        tb_input = ttk.Entry(self.frame, textvariable=self.TransitionBand)
+        tb_label.grid(column=4, row=4,columnspan=2,sticky=(W, E))
+        tb_input.grid(column=6, row=4,columnspan=2,sticky=(W, E))
+    
     def on_click_upload_sig(self):
        x,y =  self.file_manpulator.loadSignal()
-       signal = Signal(x,y)
-       self.input_visualizer.plot_discrete_graph(signal=signal)
+       self.input_signal = Signal(x,y)
+       self.input_visualizer.plot_discrete_graph(signal=self.input_signal)
 
     def on_click_apply_filter(self):
-        print("")
-    
+        # filter = LowPassFilter(fc1=1500,fs = 8000,transition_width=500)
+        # window = HammingWindow(8000,500)
+        # Compare_Signals("task7_test\Testcase 1\LPFCoefficients.txt",x,y)
+
+        # filter = HighPassFilter(fc1=1500,fs = 8000,transition_width=500)
+        # window = BlackmanWindow(8000,500)
+        # x,y = create_FIR( filter,window  )
+        # Compare_Signals("task7_test\Testcase 3\HPFCoefficients.txt",x,y)
+
+        # mfilter = BandPassFilter(fc1=150,fc2=250,fs = 1000,transition_width=50)
+        # window = BlackmanWindow(fs=1000,transition_width=50)
+        # x,y = create_FIR( mfilter,window  )
+        # Compare_Signals("task7_test\Testcase 5\BPFCoefficients.txt",x,y)
+
+        # mfilter = BandStopFilter(fc1=150,fs=1000,fc2=250,transition_width=50)
+        # window = BlackmanWindow(fs=1000,transition_width=50)
+        # x,y = create_FIR( mfilter,window  )
+        # Compare_Signals("task7_test\Testcase 7\BSFCoefficients.txt",x,y)
+        t= self.selected_type.get()
+        myfilter = self.create_filter_obj(t)
+        stopbandattenuation =self.StopBandAttenuation.get()
+        window = self.create_window(stopbandattenuation)
+        # print(window.fs)
+        window = HanningWindow(
+                fs=self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        x,y = create_FIR( myfilter,window )
+        # Compare_Signals("task7_test\Testcase 7\BSFCoefficients.txt",x,y)
+        # con_signal = conv_direct_method(Signal(x,y),self.input_signal)
+        con_signal = conv_fast_method(Signal(x,y),self.input_signal,self.sample_freq.get())
+
+        self.output_visualizer.plot_discrete_graph(signal=con_signal)
+        Compare_Signals("task7_test\Testcase 2\ecg_low_pass_filtered.txt",con_signal.x,con_signal.y)
+
+
+
     def on_click_save_signal(self,signal):
         self.file_manpulator.saveOutput( signal,self.save_file.get())
 
+    def create_window(self,stopBandAttenuation):
+        # print("in crerate window")
+        # print(stopBandAttenuation)
+        window =BlackmanWindow(
+                fs=self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        if stopBandAttenuation >=74:
+            window = BlackmanWindow(
+                fs=self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        elif stopBandAttenuation >=53:
+            window = HammingWindow(
+                fs=self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            ),
+        elif stopBandAttenuation>=44:
+            window = HanningWindow(
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            ),
+        elif stopBandAttenuation>=20:
+            window = RectangleWindow(
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        else:
+            messagebox.showerror("EROR", "Invalid stop band attenuation")
+            window = None
+        return window
 
-
+    def create_filter_obj(self,typef):
+        myfilter = None
+        if typef == Type.LOW_PASS.value:
+            myfilter = LowPassFilter(
+                fc1=self.cutoff_freq.get(),
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        elif typef == Type.HIGH_PASS.value:
+            myfilter = HighPassFilter(
+                fc1=self.cutoff_freq.get(),
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand
+            )
+        elif typef == Type.BAND_PASS.value:
+            myfilter = BandPassFilter(
+                fc1=self.cutoff_freq.get().split(' ')[0],
+                fc2=self.cutoff_freq.get().split(' ')[1],
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        else:
+            myfilter= BandStopFilter(
+                fc1=self.cutoff_freq.get().split(' ')[0],
+                fc2=self.cutoff_freq.get().split(' ')[1],
+                fs = self.sample_freq.get(),
+                transition_width=self.TransitionBand.get(),
+            )
+        return myfilter
