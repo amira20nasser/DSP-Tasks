@@ -55,7 +55,12 @@ class Convolution:
         len_1 =len(signal_1.x)
         len_2  = len(signal_2.x)
 
-        L = len_1+len_2-1
+        if len_1 != len_2:
+            L = len_1+len_2-1
+            print(L)
+        else:
+            L = len_1
+
         y_result = np.zeros(L)
 
         x_start = signal_1.x[0] + signal_2.x[0]
@@ -64,8 +69,11 @@ class Convolution:
         x_result = np.arange(x_start,x_end+1)
 
         for i in range(len_1):
-            for j in range(len_2):
-                y_result[i+j] += signal_1.y[i] * signal_2.y[j]
+            for j in range(len_2):  
+                if (j+i) > L-1:
+                    continue
+                else:
+                    y_result[i+j] += signal_1.y[i] * signal_2.y[j]
 
         # print("len y ",len(y_result))
         # print(y_result)
