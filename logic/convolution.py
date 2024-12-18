@@ -7,7 +7,7 @@ class Convolution:
         x = np.arange(0,new_len)
         y = []
         avg_signal  = Signal(x,y)
-        print("new avg sig x",avg_signal.x)
+        # print("new avg sig x",avg_signal.x)
 
         for i in range(len(original_signal.x)):
             if(new_len==0):
@@ -17,7 +17,7 @@ class Convolution:
             sm = np.round( sum(original_signal.y[i:i+window_size]) /window_size, 3)
             avg_signal.y.append(sm)
     
-        print("new avg sig y",avg_signal.y)
+        # print("new avg sig y",avg_signal.y)
         return avg_signal
     
     @staticmethod
@@ -42,12 +42,12 @@ class Convolution:
 
         second_derivative.x = np.arange(0,len(first_derivative.x)-1)
         second_derivative.y = y_final[2:len(second_derivative.x)+2]
-        print("FIRST DERIVATIVE")
-        print(f"X={first_derivative.x},Shape{first_derivative.x.shape}")
-        print(f"Y={first_derivative.y},shape{first_derivative.y.shape}")
-        print("SECOND DERIVATIVE")
-        print(f"X={second_derivative.x},shape{second_derivative.x.shape}")
-        print(f"Y={second_derivative.y},shape{second_derivative.y.shape}")
+        # print("FIRST DERIVATIVE")
+        # print(f"X={first_derivative.x},Shape{first_derivative.x.shape}")
+        # print(f"Y={first_derivative.y},shape{first_derivative.y.shape}")
+        # print("SECOND DERIVATIVE")
+        # print(f"X={second_derivative.x},shape{second_derivative.x.shape}")
+        # print(f"Y={second_derivative.y},shape{second_derivative.y.shape}")
         return first_derivative,second_derivative
     
     @staticmethod
@@ -67,16 +67,16 @@ class Convolution:
             for j in range(len_2):
                 y_result[i+j] += signal_1.y[i] * signal_2.y[j]
 
-        print("len y ",len(y_result))
-        print(y_result)
+        # print("len y ",len(y_result))
+        # print(y_result)
 
-        print("len x ",len(x_result))
-        print(x_result)
+        # print("len x ",len(x_result))
+        # print(x_result)
         
         singal = Signal(x_result,y_result)
         return singal
 
-        print()
+        # print()
 
 
 

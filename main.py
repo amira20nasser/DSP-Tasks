@@ -6,20 +6,13 @@ from ui.task4_ui import Task4UI
 from ui.task5_ui import Task5UI
 from ui.task6_ui import Task6UI
 from ui.task7_ui import Task7UI
-
+from logic.filters import *
 from logic.fourier_transform import *
 from logic.basic_signal_operations import*
 def main():
     ui = UI()
     root, notebook = ui.initialize()
 
-    """
-    x_n = FourierTransform.idtf_transform([64,20.9050074380220 ,11.3137084989848 ,8.65913760233915 ,8 ,8.65913760233915 ,11.313708498984 ,20.9050074380220],
-                                            [0,1.96349540849362,2.35619449019235,2.74889357189107 ,-3.14159265358979,-2.74889357189107,-2.35619449019235,-1.96349540849362]
-    )
-    """
-    #x_k= FourierTransform.dtf_transform([1, 3, 5, 7, 9, 11, 13, 15],8)                                     
-    # print(x_n)
     task7_tab = Task7UI(notebook,"Task 7")
     task7_tab.add()
 

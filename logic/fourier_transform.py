@@ -17,8 +17,8 @@ class FourierTransform:
             phase=cmath.polar(res)[1]
             x_k_amplitude.append(amplitude)
             x_k_phase.append(phase)
-        print("amplitude", x_k_amplitude)
-        print("phase", x_k_phase)
+        # print("amplitude", x_k_amplitude)
+        # print("phase", x_k_phase)
 
         return x_k_amplitude, x_k_phase       # return amplitude and phaseshift 
        
