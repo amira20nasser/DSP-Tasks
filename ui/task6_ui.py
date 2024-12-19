@@ -8,11 +8,9 @@ from ui.ui_widgets import Tab
 from utils import *
 from logic.basic_signal_operations import Signal
 from logic.correlation import Correlation
-
-from task1_test.tests import *
 from visualizer import *
 from file_manpulator import *
-
+from task6_test.CompareSignal import Compare_Signals
 class Task6UI(Tab):
     def initialize_ui_variables(self):
         self.out = None
@@ -87,9 +85,11 @@ class Task6UI(Tab):
         if self.a_signal==None or self.b_signal==None:
             show_message_box("DSP" , "Please upload signals A and B")
             return -1
-        s= Correlation.correlate(self.a_signal,self.b_signal)
+        self.out = Correlation.correlate(self.a_signal,self.b_signal)
         self.output_visualizer.clear_plotting()
-        self.output_visualizer.plot_discrete_graph(s)
+        self.output_visualizer.plot_discrete_graph(self.out)
+
+        Compare_Signals("task6_test/Point1 Correlation/CorrOutput.txt",self.out.x,self.out.y)
 
     def on_click_calculate_delay(self):
         self.input_visualizer.clear_plotting()
@@ -123,6 +123,7 @@ class Task6UI(Tab):
         print(f"Loaded up: {len(up)} signals")
 
         self.input_visualizer.clear_plotting()
+        self.output_visualizer.clear_plotting()
 
         print("TEST CASE 3.1")
         x, y =  self.file_manpulator.loadSignalY("task6_test/point3 Files/Test Signals/Test1.txt")

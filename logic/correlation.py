@@ -48,14 +48,12 @@ class Correlation:
         max_corr_a=[]
         for sig in a:
             corr = Correlation.correlate(signal, sig)
-            print(corr.y)
             max_corr_a.append(np.max(corr.y))
         avg_corr_a=np.array(max_corr_a).mean()
 
         max_corr_b=[]
         for sig in b:
             corr = Correlation.correlate(signal, sig)
-            print(corr.y)
             max_corr_b.append(np.max(corr.y))
         avg_corr_b=np.array(max_corr_b).mean()
 

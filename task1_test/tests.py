@@ -147,6 +147,3 @@ def Folding(Your_indices,Your_samples):
             print("Folding Test case failed, your signal have different values from the expected one") 
             return
     print("Folding Test case passed successfully")
-
-
-# %%
