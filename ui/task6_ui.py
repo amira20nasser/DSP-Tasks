@@ -106,6 +106,9 @@ class Task6UI(Tab):
        self.input_visualizer.plot_discrete_graph(signal=self.b_signal)   
 
        self.on_click_correlation()
+
+       print(f"Result x: {self.out.x}")
+       print(f"Result y: {self.out.y}")
        Compare_Signals("task6_test/Point1 Correlation/CorrOutput.txt",self.out.x,self.out.y)
 
     def on_click_calculate_delay(self):
