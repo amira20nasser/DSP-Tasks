@@ -108,12 +108,6 @@ class Task6UI(Tab):
         self.output_visualizer.plot_discrete_graph(self.out)
     
     def on_click_classify_signal(self):
-        self.input_visualizer.clear_plotting()
-
-        x, y =  self.file_manpulator.loadSignalY("task6_test/Point2 Time analysis/TD_input signal1.txt")
-        self.a_signal = Signal(x,y)
-        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
-
         down = []
         down_path="task6_test/point3 Files/Class 1"
         for f in os.listdir(down_path):
@@ -123,10 +117,19 @@ class Task6UI(Tab):
         
         up = []
         up_path="task6_test/point3 Files/Class 2"
-        for f in os.listdir(down_path):
-            x, y = self.file_manpulator.loadSignalY(file=f"{down_path}/{f}")
+        for f in os.listdir(up_path):
+            x, y = self.file_manpulator.loadSignalY(file=f"{up_path}/{f}")
             up.append(Signal(x,y))
         print(f"Loaded up: {len(up)} signals")
 
-        Correlation.classify_signal(self.a_signal,up,down)
-        
+        self.input_visualizer.clear_plotting()
+
+        print("TEST CASE 3.1")
+        x, y =  self.file_manpulator.loadSignalY("task6_test/point3 Files/Test Signals/Test1.txt")
+        self.a_signal = Signal(x,y)
+        Correlation.classify_signal(self.a_signal,down,up)
+
+        print("TEST CASE 3.2")
+        x, y =  self.file_manpulator.loadSignalY("task6_test/point3 Files/Test Signals/Test2.txt")
+        self.a_signal = Signal(x,y)
+        Correlation.classify_signal(self.a_signal,down,up)
