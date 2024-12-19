@@ -84,53 +84,47 @@ class Task7UI(Tab):
        self.input_visualizer.plot_discrete_graph(signal=self.input_signal)
 
     def on_click_apply_filter(self):
-        # myfilter = LowPassFilter(fc1=1500,fs = 8000,transition_width=500)
-        # window = HammingWindow(8000,500)
-        # x,y = create_FIR( myfilter,window  )
-        # Compare_Signals("task7_test\Testcase 1\LPFCoefficients.txt",x,y)
-        # x,y= self.file_manpulator.loadSignal(file="task7_test\Testcase 2\ecg_low_pass_filtered.txt")
-        # self.input_signal = Signal(x,y)
-        # con_signal = conv_direct_method(Signal(x,y),self.input_signal)
-        # Compare_Signals("task7_test\Testcase 2\ecg_low_pass_filtered.txt",con_signal.x,con_signal.y)
-        
-        # myfilter = HighPassFilter(fc1=1500,fs = 8000,transition_width=500)
-        # window = BlackmanWindow(8000,500)
-        # x_filter,y_filter = create_FIR( myfilter,window  )
-        # Compare_Signals("task7_test\Testcase 3\HPFCoefficients.txt", x_filter,y_filter)
-        # x,y = self.file_manpulator.loadSignal(file="task7_test\Testcase 4\ecg400.txt")
-        # self.input_signal = Signal(x,y)
-        # con_signal = conv_direct_method(Signal(x_filter,y_filter),self.input_signal)
-        # Compare_Signals("task7_test\Testcase 4\ecg_high_pass_filtered.txt",con_signal.x,con_signal.y)
+        print("Test case 1:")
+        myfilter = LowPassFilter(fc1=1500,fs = 8000,transition_width=500)
+        window = HammingWindow(8000,500)
+        x,y = create_FIR( myfilter,window  )
+        Compare_Signals("task7_test/Testcase 1/LPFCoefficients.txt",x,y)
 
+        print("Test case 2:")
+        x,y= self.file_manpulator.loadSignal(file="task7_test/Testcase 2/ecg_low_pass_filtered.txt")
+        self.input_signal = Signal(x,y)
+        con_signal = conv_direct_method(Signal(x,y),self.input_signal)
+        Compare_Signals("task7_test/Testcase 2/ecg_low_pass_filtered.txt",con_signal.x,con_signal.y)
+        
+        print("Test case 3:")
+        myfilter = HighPassFilter(fc1=1500,fs = 8000,transition_width=500)
+        window = BlackmanWindow(8000,500)
+        x_filter,y_filter = create_FIR( myfilter,window  )
+        Compare_Signals("task7_test/Testcase 3/HPFCoefficients.txt", x_filter,y_filter)
+
+        print("Test case 4:")
+        x,y = self.file_manpulator.loadSignal(file="task7_test/Testcase 4/ecg400.txt")
+        self.input_signal = Signal(x,y)
+        con_signal = conv_direct_method(Signal(x_filter,y_filter),self.input_signal)
+        Compare_Signals("task7_test/Testcase 4/ecg_high_pass_filtered.txt",con_signal.x,con_signal.y)
+
+        print("Test case 5:")
         mfilter = BandPassFilter(fc1=150,fc2=250,fs = 1000,transition_width=50)
         window = BlackmanWindow(fs=1000,transition_width=50)
         x,y = create_FIR( mfilter,window  )
-        Compare_Signals("task7_test\Testcase 5\BPFCoefficients.txt",x,y)
-        x,y = self.file_manpulator.loadSignal(file="task7_test\Testcase 6\ecg400.txt")
+        Compare_Signals("task7_test/Testcase 5/BPFCoefficients.txt",x,y)
+
+        print("Test case 6:")
+        x,y = self.file_manpulator.loadSignal(file="task7_test/Testcase 6/ecg400.txt")
         self.input_signal = Signal(x,y)
         con_signal = conv_direct_method(Signal(x,y),self.input_signal)
-        Compare_Signals("task7_test\Testcase 6\ecg_band_pass_filtered.txt",con_signal.x,con_signal.y)
+        Compare_Signals("task7_test/Testcase 6/ecg_band_pass_filtered.txt",con_signal.x,con_signal.y)
 
-        # mfilter = BandStopFilter(fc1=150,fs=1000,fc2=250,transition_width=50)
-        # window = BlackmanWindow(fs=1000,transition_width=50)
-        # x,y = create_FIR( mfilter,window  )
-        # Compare_Signals("task7_test\Testcase 7\BSFCoefficients.txt",x,y)
-        # t= self.selected_type.get()
-        # myfilter = self.create_filter_obj(t)
-        # stopbandattenuation =self.StopBandAttenuation.get()
-        # window = self.create_window(stopbandattenuation)
-        # # print(window.fs)
-        # window = HanningWindow(
-        #         fs=self.sample_freq.get(),
-        #         transition_width=self.TransitionBand.get(),
-        #     )
-        # x,y = create_FIR( myfilter,window )
-        # Compare_Signals("task7_test\Testcase 1\LPFCoefficients.txt",x,y)
-        # con_signal = conv_direct_method(Signal(x,y),self.input_signal)
-        # # con_signal = conv_fast_method(Signal(x,y),self.input_signal,self.sample_freq.get())
-
-        # self.input_visualizer.plot_discrete_graph(signal=con_signal)
-        # Compare_Signals("task7_test\Testcase 2\ecg_low_pass_filtered.txt",con_signal.x,con_signal.y)
+        print("Test case 7:")
+        mfilter = BandStopFilter(fc1=150,fs=1000,fc2=250,transition_width=50)
+        window = BlackmanWindow(fs=1000,transition_width=50)
+        x,y = create_FIR( mfilter,window  )
+        Compare_Signals("task7_test/Testcase 7/BSFCoefficients.txt",x,y)
 
 
 
