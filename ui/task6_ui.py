@@ -44,7 +44,8 @@ class Task6UI(Tab):
         sig_B_btn.grid(column=2, row=2,columnspan=2,sticky=(W, E))
 
 
-        correlation = ttk.Button(self.frame, text="Calculate Correlation",command=self.on_click_correlation)
+        correlation = ttk.Button(self.frame, text="Calculate Correlation",command=self.on_click_correlation,bootstyle=OUTLINE)
+        test_correlation= ttk.Button(self.frame, text="Test Correlation",command=self.on_click_test_correlation)
         delay = ttk.Button(self.frame, text="Calculate Delay",command=self.on_click_calculate_delay)
         classify = ttk.Button(self.frame, text="Classify Signal",command=self.on_click_classify_signal)
 
@@ -52,7 +53,8 @@ class Task6UI(Tab):
         fs_label.grid(column=0, row=3,columnspan=1,sticky=(W, E))
         fs_entry.grid(column=1, row=3,columnspan=3,sticky=(W, E))
 
-        correlation.grid(column=0,row=4,columnspan=4, sticky=(N, W, E, S))
+        correlation.grid(column=0,row=4,columnspan=2, sticky=(N, W, E, S))
+        test_correlation.grid(column=2,row=4,columnspan=2, sticky=(N, W, E, S))
         delay.grid(column=0,row=5,columnspan=4, sticky=(N, W, E, S))
         classify.grid(column=0,row=6,columnspan=4, sticky=(N, W, E, S))
 
@@ -69,12 +71,13 @@ class Task6UI(Tab):
         self.output_visualizer.clear_plotting()
 
     def on_click_upload_sig_a(self):
-       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal1.txt")
+       self.input_visualizer.clear_plotting()
+       x,y =  self.file_manpulator.loadSignal()
        self.a_signal = Signal(x,y)
        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
 
     def on_click_upload_sig_b(self):
-       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal2.txt")
+       x,y =  self.file_manpulator.loadSignal()
        self.b_signal = Signal(x,y)
        self.input_visualizer.plot_discrete_graph(signal=self.b_signal)   
 
@@ -89,7 +92,21 @@ class Task6UI(Tab):
         self.output_visualizer.clear_plotting()
         self.output_visualizer.plot_discrete_graph(self.out)
 
-        Compare_Signals("task6_test/Point1 Correlation/CorrOutput.txt",self.out.x,self.out.y)
+
+    def on_click_test_correlation(self):
+       self.input_visualizer.clear_plotting()
+
+       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal1.txt")
+       self.a_signal = Signal(x,y)
+
+       self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
+
+       x,y =  self.file_manpulator.loadSignal("task6_test/Point1 Correlation/Corr_input signal2.txt")
+       self.b_signal = Signal(x,y)
+       self.input_visualizer.plot_discrete_graph(signal=self.b_signal)   
+
+       self.on_click_correlation()
+       Compare_Signals("task6_test/Point1 Correlation/CorrOutput.txt",self.out.x,self.out.y)
 
     def on_click_calculate_delay(self):
         self.input_visualizer.clear_plotting()
@@ -125,12 +142,26 @@ class Task6UI(Tab):
         self.input_visualizer.clear_plotting()
         self.output_visualizer.clear_plotting()
 
-        print("TEST CASE 3.1")
+        print("TEST CASE 1")
         x, y =  self.file_manpulator.loadSignalY("task6_test/point3 Files/Test Signals/Test1.txt")
         self.a_signal = Signal(x,y)
         Correlation.classify_signal(self.a_signal,down,up)
+      
+        self.output_visualizer.clear_plotting()
+        self.input_visualizer.clear_plotting()
+        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
 
-        print("TEST CASE 3.2")
+        input("Press Enter to continue...")
+
+
+
+        print("TEST CASE 2")
         x, y =  self.file_manpulator.loadSignalY("task6_test/point3 Files/Test Signals/Test2.txt")
         self.a_signal = Signal(x,y)
         Correlation.classify_signal(self.a_signal,down,up)
+
+        self.output_visualizer.clear_plotting()
+        self.input_visualizer.clear_plotting()
+        self.input_visualizer.plot_discrete_graph(signal=self.a_signal)
+
+        input("Testing done!")

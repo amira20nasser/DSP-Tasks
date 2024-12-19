@@ -96,6 +96,9 @@ class Window(ABC):
         pass
 
 class RectangleWindow(Window):
+    def __init__(self,fs,transition_width):
+        super().__init__(fs,transition_width)
+
     def get_normalization_factor(self):
         return 0.9
 
@@ -106,6 +109,9 @@ class RectangleWindow(Window):
         return x,y
 
 class HanningWindow(Window):
+    def __init__(self,fs,transition_width):
+        super().__init__(fs,transition_width)
+        
     def get_normalization_factor(self):
         return 3.1
 
@@ -116,6 +122,9 @@ class HanningWindow(Window):
         return x,y
 
 class HammingWindow(Window):
+    def __init__(self,fs,transition_width):
+        super().__init__(fs,transition_width)
+        
     def get_normalization_factor(self):
         return 3.3
 
@@ -127,6 +136,9 @@ class HammingWindow(Window):
         return x,y
 
 class BlackmanWindow(Window):
+    def __init__(self,fs,transition_width):
+        super().__init__(fs,transition_width)
+        
     def get_normalization_factor(self):
         return 5.5
 
@@ -141,6 +153,7 @@ class BlackmanWindow(Window):
 
 def create_FIR(mfilter,window):
     y_filter = []
+    print(window)
     n = window.N
     fromV = (n-1) /2
     x_filter = np.arange(-fromV , fromV+1)
@@ -156,7 +169,6 @@ def create_FIR(mfilter,window):
 
 def conv_direct_method(signal1_obj,signal2_obj):
    signal_obj =  Convolution.convolve(signal1_obj,signal2_obj)
-   print("direct->",len(signal_obj.y))
    return signal_obj
 
 def conv_fast_method(signal1_obj,signal2_obj,fs):
@@ -166,5 +178,4 @@ def conv_fast_method(signal1_obj,signal2_obj,fs):
     phase = np.multiply(phase1 , phase2)
     X_n = FourierTransform.idtf_transform(amp,phase)
     indicies =[i for i in range(len(X_n))]
-    print("conv using fast len ",len(X_n))
     return Signal(indicies,X_n)
