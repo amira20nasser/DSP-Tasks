@@ -153,7 +153,6 @@ class BlackmanWindow(Window):
 
 def create_FIR(mfilter,window):
     y_filter = []
-    print(window)
     n = window.N
     fromV = (n-1) /2
     x_filter = np.arange(-fromV , fromV+1)
@@ -167,15 +166,30 @@ def create_FIR(mfilter,window):
     return x_filter,y_final
 
 
-def conv_direct_method(signal1_obj,signal2_obj):
-   signal_obj =  Convolution.convolve(signal1_obj,signal2_obj)
+def conv_direct_method(filter_signal,input_signal):
+   signal_obj =  Convolution.convolve(filter_signal,input_signal)
    return signal_obj
 
-def conv_fast_method(signal1_obj,signal2_obj,fs):
-    amplitude1, phase1 = FourierTransform.dtf_transform(signal1_obj.y,fs)
-    amplitude2, phase2 =  FourierTransform.dtf_transform(signal2_obj.y,fs)
-    amp = np.multiply(amplitude1 , amplitude2)
-    phase = np.multiply(phase1 , phase2)
-    X_n = FourierTransform.idtf_transform(amp,phase)
-    indicies =[i for i in range(len(X_n))]
+def conv_fast_method(filter_signal,input_signal,fs=None):
+    
+    start_x = min(filter_signal.x[0], input_signal.x[0])  
+    length = len(input_signal.x) + len(filter_signal.x) -1 
+    end_x = start_x + length
+
+    padded_input_signal = input_signal
+    padded_filter_signal=filter_signal
+
+    padded_input_signal.y = np.pad(input_signal.y,pad_width=(0, length-len(input_signal.x) )) 
+    padded_filter_signal.y = np.pad(filter_signal.y, pad_width= (0, length-len(filter_signal.x)))
+
+    amplitude1, phase1 = FourierTransform.dtf_transform(padded_input_signal.y)
+    amplitude2, phase2 =  FourierTransform.dtf_transform(padded_filter_signal.y)
+
+    amp = np.multiply(amplitude1,amplitude2) 
+    phase = np.add(phase1 , phase2) 
+    
+    X_n = FourierTransform.idtf_transform(amp,phase) 
+
+    indicies =  np.arange(start_x, start_x + len(X_n))
+
     return Signal(indicies,X_n)

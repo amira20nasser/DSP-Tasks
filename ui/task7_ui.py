@@ -114,12 +114,11 @@ class Task7UI(Tab):
         print("Test case 2:")
         xs,ys= self.file_manpulator.loadSignal(file="task7_test/Testcase 2/ecg400.txt")
         self.input = Signal(xs,ys)
-        con_signal = conv_direct_method(filter_signal,self.input)
+        con_signal = conv_fast_method(filter_signal,self.input,fs=None)
     
         Compare_Signals("task7_test/Testcase 2/ecg_low_pass_filtered.txt",con_signal.x,con_signal.y)
     
-        self.input_visualizer.clear_plotting()
-        self.input_visualizer.plot_discrete_graph(signal=self.input)
+
         self.output_visualizer.clear_plotting()
         self.output_visualizer.plot_discrete_graph(signal=con_signal)
         input("Press Enter to continue...")
@@ -128,7 +127,7 @@ class Task7UI(Tab):
         myfilter = HighPassFilter(fc1=1500,fs = 8000,transition_width=500)
         window = BlackmanWindow(8000,500)
         xf,yf = create_FIR( myfilter,window  )
-
+        filter_signal=Signal(xf,yf)
         Compare_Signals("task7_test/Testcase 3/HPFCoefficients.txt", xf,yf)
 
         self.output_visualizer.clear_plotting()
@@ -155,6 +154,7 @@ class Task7UI(Tab):
         mfilter = BandPassFilter(fc1=150,fc2=250,fs = 1000,transition_width=50)
         window = BlackmanWindow(fs=1000,transition_width=50)
         xf,yf = create_FIR( mfilter,window  )
+        filter_signal=Signal(xf,yf)
 
         Compare_Signals("task7_test/Testcase 5/BPFCoefficients.txt",xf,yf)
 
@@ -180,7 +180,8 @@ class Task7UI(Tab):
         mfilter = BandStopFilter(fc1=150,fs=1000,fc2=250,transition_width=50)
         window = BlackmanWindow(fs=1000,transition_width=50)
         xf,yf = create_FIR( mfilter,window  )
-        
+        filter_signal=Signal(xf,yf)
+
         Compare_Signals("task7_test/Testcase 7/BSFCoefficients.txt",xf,yf)
  
         self.output_visualizer.clear_plotting()

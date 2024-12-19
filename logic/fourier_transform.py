@@ -4,11 +4,11 @@ import cmath
 class FourierTransform:
     
     @staticmethod
-    def dtf_transform(signal ,fs):
+    def dtf_transform(signal ,fs=None):
         x_k_amplitude = []
         x_k_phase =[]
         length = len(signal)
-        for k in range(fs): 
+        for k in range(length): 
             res = 0
             for n in range(length):
                 pow=-1j*k*2*math.pi*n/length
@@ -35,8 +35,7 @@ class FourierTransform:
                 angle = (2 * math.pi * k * n) / length
                 term = x_k * complex(math.cos(angle),math.sin(angle))
                 sumk+= term
-            x_n.append(round(sumk.real/length))
-
+            x_n.append(sumk.real/length)
         return x_n
             
 
