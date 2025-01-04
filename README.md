@@ -1,5 +1,5 @@
 # Digital Signal Processing '25
-This repo houses me and Amira's (@amira20nasser) tasks for Digital Signal Processing '25 course at FCIS, Ain Shams University.
+This repo houses me and Amna's (@thisisamna) tasks for Digital Signal Processing '25 course at FCIS, Ain Shams University.
 
 ## Usage
 
