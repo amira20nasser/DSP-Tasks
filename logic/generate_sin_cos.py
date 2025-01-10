@@ -23,11 +23,11 @@ class GenerateSinCos:
 
     @staticmethod
     def sampling_sin_cos(sig_type : Type,amp,freq,shifted,fs):
-        n = np.arange(0, 1,1/fs) 
+        n = np.arange(0, fs,1) 
         if sig_type == Type.SIN:
-            x_n = amp * np.sin(2* np.pi * freq *n )
+            x_n = amp * np.sin(2* np.pi * freq/fs *n )
         elif sig_type == Type.COS:
-            x_n = amp * np.cos(2* np.pi * freq*n )
+            x_n = amp * np.cos(2* np.pi * freq/fs*n )
         else:
             print("!!SAMPLING TYPE SIGNAL NOT SIN OR COS!!")
             n=0

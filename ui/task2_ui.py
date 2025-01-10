@@ -22,7 +22,7 @@ class Task2UI(Tab):
         self.file_manpulator = FileManpulator()
         self.selected_type = StringVar(value=Type.SIN.name)
         self.wave_visualizer = Visualizer(frame=self.frame,title='Input Signal(s)',xlabel='t',ylabel='x(t)')
-        self.wave_sampled_visualizer = Visualizer(frame=self.frame,title='Wave Signal',xlabel='t',ylabel='x(t)')
+        self.wave_sampled_visualizer = Visualizer(frame=self.frame,title='Wave Signal',xlabel='n',ylabel='x(n)')
         self.interpolate_visualizer = Visualizer(frame=self.frame,title='Sampled Wave',xlabel='t',ylabel='x(t)')
 
     def __init__(self, notebook, name):
@@ -105,6 +105,7 @@ class Task2UI(Tab):
         t,x_t = GenerateSinCos.generate_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get())
         signal = Signal(t,x_t)
         self.continous_out = signal
+        self.wave_visualizer.clear_plotting()
         self.wave_visualizer.title = f"{self.selected_type.get()} Signal"
         self.wave_visualizer.plot_continous_graph(signal = signal)
 
@@ -115,6 +116,7 @@ class Task2UI(Tab):
         n,x_n = GenerateSinCos.sampling_sin_cos(Type[self.selected_type.get()],self.amplitude.get(),self.freq.get(),self.shifted.get(),self.fs.get())
         signal = Signal(n,x_n)
         self.discrete_out = signal
+        self.wave_sampled_visualizer.clear_plotting()
         self.wave_sampled_visualizer.title = f"Sampling {self.selected_type.get()} Signal"
         self.wave_sampled_visualizer.plot_discrete_graph(signal=signal)
 
